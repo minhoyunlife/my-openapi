@@ -4,16 +4,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Swagger UI</title>
-    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="./swagger-ui/swagger-ui.css" />
   </head>
 
   <body>
     <div id="swagger-ui"></div>
-    <script src="./swagger-ui-bundle.js" charset="UTF-8"></script>
+    <script src="./swagger-ui/swagger-ui-bundle.js" charset="UTF-8"></script>
     <script>
       window.onload = () => {
         window.ui = SwaggerUIBundle({
-          url: "../openapi/openapi.yaml",
+          url: "./openapi/openapi.yaml",
           dom_id: "#swagger-ui",
         });
       };
