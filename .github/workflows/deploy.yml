@@ -1,4 +1,4 @@
-name: Deploy Swagger UI to Github Pages
+name: Deploy Mock Server and Swagger UI
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  gh-pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -31,3 +31,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+  # TODO: Deploy mock server to vercel

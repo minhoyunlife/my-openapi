@@ -1,0 +1,14 @@
+name: Check OpenAPI specs
+
+on:
+  push:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: stoplightio/spectral-action@latest
+        with:
+          file_glob: "openapi/openapi.yaml"
