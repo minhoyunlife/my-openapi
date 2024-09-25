@@ -1,0 +1,33 @@
+Artwork:
+  type: object
+  properties:
+    id:
+      type: string
+      description: 작품 식별자
+    title:
+      type: string
+      description: 게임 제목
+    imageUrl:
+      type: string
+      format: uri
+      description: 팬아트 작품 이미지 URL
+    createdAt:
+      type: string
+      format: date-time
+      description: 팬아트 작품을 완성한 날짜
+    genres:
+      type: array
+      items:
+        type: string
+      description: 게임의 장르
+    playedOn:
+      type: string
+      enum: [Steam, Switch, GOG, Epic Games, Android]
+      description: 플레이한 플랫폼
+    rating:
+      type: number
+      format: float
+      description: 개인적으로 매긴 게임 평점
+    shortReview:
+      type: string
+      description: 플레이 후 한줄평
