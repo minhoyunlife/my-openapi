@@ -1,4 +1,4 @@
-name: Deploy Mock Server and Swagger UI
+name: Deploy Swagger UI to Github Pages
 
 on:
   push:
@@ -31,4 +31,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-  # TODO: Deploy mock server to vercel
