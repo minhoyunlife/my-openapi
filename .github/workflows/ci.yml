@@ -3,7 +3,7 @@ name: Check OpenAPI specs
 on:
   push:
     paths:
-      - "openapi/**/*.{yaml,yml}"
+      - "openapi/**/*.yaml"
 
 jobs:
   check:
