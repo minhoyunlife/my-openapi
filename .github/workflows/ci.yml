@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "openapi/**/*.yaml"
+      - "openapi/**/*.yml"
 
 jobs:
   check:
