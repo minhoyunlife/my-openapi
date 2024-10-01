@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true # 워크플로우가 실행 중일 때 별도로 워크플로우가 실행 시, 기존 실행을 취소하고 새로운 워크플로우를 우선시함
 
 jobs:
   gh-pages:
@@ -28,10 +28,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Copy openapi directory to swagger-ui
+        run: cp -r openapi swagger-ui
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./"
+          path: "./swagger-ui"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
