@@ -2,14 +2,15 @@
   "name": "my-openapi",
   "version": "0.0.1",
   "description": "OpenAPI specs for MY projects",
-  "main": "index.js",
+  "author": "Minho Yun",
   "scripts": {
     "start:mock": "prism mock ./openapi/openapi.yaml",
-    "lint": "spectral lint ./openapi/openapi.yaml"
+    "lint": "spectral lint ./openapi/openapi.yaml",
+    "generate:ts": "openapi-generator-cli generate -i openapi/openapi.yaml -g typescript-axios -o ./clients/ts-client/generated"
   },
-  "author": "Minho Yun",
-  "dependencies": {
+  "devDependencies": {
     "@stoplight/prism-cli": "^5.10.0",
-    "@stoplight/spectral-cli": "^6.13.1"
+    "@stoplight/spectral-cli": "^6.13.1",
+    "@openapitools/openapi-generator-cli": "^2.13.12"
   }
 }
