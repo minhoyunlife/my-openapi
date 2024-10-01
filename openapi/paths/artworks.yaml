@@ -1,5 +1,5 @@
 get:
-  description: 작품 목록 취득ㄴ
+  description: 작품 목록 취득
   operationId: getArtworks
   tags:
     - Artworks

@@ -1,13 +1,12 @@
 name: Deploy Swagger UI to Github Pages
 
-# on:
-#   push:
-#     branches:
-#       - "main"
-#     paths:
-#       - "openapi/**/*.yaml"
-#       - "openapi/**/*.yml"
-on: push
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "openapi/**/*.yaml"
+      - "openapi/**/*.yml"
 
 permissions:
   contents: read
