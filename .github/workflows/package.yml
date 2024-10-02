@@ -1,0 +1,48 @@
+name: Publish OpenAPI client to Github Packages
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "openapi/**/*.yaml"
+      - "openapi/**/*.yml"
+      - "clients/**/*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: '!contains(github.event.head_commit.message, "[skip ci]")'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com/"
+          cache: "pnpm"
+      - name: Install root dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate OpenAPI typescript client
+        uses: pnpm run generate:ts
+      - name: Install client dependencies
+        working-directory: ./clients/ts-client
+        run: pnpm install --frozen-lockfile
+      - name: Build the generated client
+        working-directory: ./clients/ts-client
+        run: pnpm run build
+      - name: Release the client
+        working-directory: ./clients/ts-client
+        run: pnpm exec semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
