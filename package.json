@@ -9,8 +9,9 @@
     "generate:ts": "openapi-generator-cli generate -i openapi/openapi.yaml -g typescript-axios -o ./clients/ts-client/generated"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.12",
     "@stoplight/prism-cli": "^5.10.0",
     "@stoplight/spectral-cli": "^6.13.1",
-    "@openapitools/openapi-generator-cli": "^2.13.12"
+    "semantic-release": "^24.1.2"
   }
 }
