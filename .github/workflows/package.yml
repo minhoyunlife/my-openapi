@@ -42,8 +42,7 @@ jobs:
         working-directory: ./clients/ts-client
         run: pnpm run build
       - name: Release the client
-        working-directory: ./clients/ts-client
-        run: pnpm exec semantic-release
+        run: pnpm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
