@@ -8,8 +8,7 @@
     [
       "@semantic-release/npm",
       {
-        "pkgRoot": "./clients/ts-client",
-        "npmPublish": false
+        "pkgRoot": "./clients/ts-client"
       }
     ],
     "@semantic-release/github",
