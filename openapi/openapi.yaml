@@ -4,7 +4,7 @@ info:
   description: API specs for building MY projects.
   version: 0.0.1
 servers:
-  - url: http://api.example.com/v1
+  - url: http://api.example.com/v1 # 나중에 수정
 tags:
   - name: Artworks
     description: 팬아트 작품 관리와 관련된 오퍼레이션
