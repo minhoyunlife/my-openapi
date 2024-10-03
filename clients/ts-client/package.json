@@ -1,6 +1,6 @@
 {
   "name": "@minhoyunlife/my-ts-client",
-  "version": "1.0.4",
+  "version": "0.0.1",
   "description": "Generated TypeScript API client from MY Projects' OpenAPI specs",
   "author": "Minho Yun",
   "main": "dist/index.js",
