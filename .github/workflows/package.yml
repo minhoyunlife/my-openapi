@@ -8,6 +8,7 @@ on:
       - "openapi/**/*.yaml"
       - "openapi/**/*.yml"
       - "clients/**/*"
+  workflow_dispatch:
 
 permissions:
   contents: write
