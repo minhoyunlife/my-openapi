@@ -33,7 +33,7 @@ jobs:
       - name: Install root dependencies
         run: pnpm install --frozen-lockfile
       - name: Generate OpenAPI typescript client
-        uses: pnpm run generate:ts
+        run: pnpm run generate:ts
       - name: Install client dependencies
         working-directory: ./clients/ts-client
         run: pnpm install --frozen-lockfile
