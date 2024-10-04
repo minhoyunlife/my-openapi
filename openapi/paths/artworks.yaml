@@ -11,4 +11,29 @@ get:
           schema:
             type: array
             items:
-              $ref: "../components/schemas.yaml#/Artwork"
+              $ref: "../components/artwork.yaml#/Artwork"
+
+post:
+  description: 새로운 작품 등록
+  operationId: createArtwork
+  tags:
+    - Artworks
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../components/artwork.yaml#/ArtworkInput"
+  responses:
+    "201":
+      description: 작품이 성공적으로 등록됨
+      content:
+        application/json:
+          schema:
+            $ref: "../components/artwork.yaml#/Artwork"
+    "400":
+      description: 잘못된 요청
+      content:
+        application/json:
+          schema:
+            $ref: "../components/errors.yaml#/Error"
