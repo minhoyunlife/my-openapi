@@ -1,0 +1,25 @@
+Error:
+  type: object
+  required:
+    - status
+    - message
+  properties:
+    status:
+      type: integer
+      description: 에러 상태 코드
+    message:
+      type: string
+      description: 에러 메시지
+    details:
+      type: array
+      description: 추가적인 에러 세부 정보
+      items:
+        type: object
+  example:
+    status: 400
+    message: "입력 데이터가 유효하지 않습니다."
+    details:
+      - field: "title"
+        message: "제목은 필수 항목입니다."
+      - field: "rating"
+        message: "평점은 0에서 5 사이의 값이어야 합니다."
