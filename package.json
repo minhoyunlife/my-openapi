@@ -17,6 +17,7 @@
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@stoplight/prism-cli": "^5.10.0",
     "@stoplight/spectral-cli": "^6.13.1",
+    "@stoplight/spectral-rulesets": "1.18.1",
     "semantic-release": "^24.1.2"
   }
 }

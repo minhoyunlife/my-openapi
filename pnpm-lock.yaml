@@ -32,6 +32,9 @@ importers:
       '@stoplight/spectral-cli':
         specifier: ^6.13.1
         version: 6.13.1
+      '@stoplight/spectral-rulesets':
+        specifier: 1.18.1
+        version: 1.18.1
       semantic-release:
         specifier: ^24.1.2
         version: 24.1.2
@@ -368,8 +371,8 @@ packages:
     resolution: {integrity: sha512-nDfkVfYeWWv0UvILC4TWZSnRqQ4rHgeOJO1/lHQ7XHeG5iONanQ639B1aK6ZS6vuUc8gwuyQsrPF67b4sHIyYw==}
     engines: {node: '>=12'}
 
-  '@stoplight/spectral-rulesets@1.20.2':
-    resolution: {integrity: sha512-7Y8orZuNyGyeHr9n50rMfysgUJ+/zzIEHMptt66jiy82GUWl+0nr865DkMuXdC5GryfDYhtjoRTUCVsXu80Nkg==}
+  '@stoplight/spectral-rulesets@1.18.1':
+    resolution: {integrity: sha512-buLzYi4rHjZOG2d5LC/s3YpySrCGrwR4irKDyrxLlbbqmB8BDOsrdO+7G9UGvRCJwAy/xs1VWcjokzGnG68K+Q==}
     engines: {node: '>=12'}
 
   '@stoplight/spectral-runtime@1.1.2':
@@ -2995,7 +2998,7 @@ snapshots:
       '@stoplight/spectral-ref-resolver': 1.0.4
       '@stoplight/spectral-ruleset-bundler': 1.6.0
       '@stoplight/spectral-ruleset-migrator': 1.10.0
-      '@stoplight/spectral-rulesets': 1.20.2
+      '@stoplight/spectral-rulesets': 1.18.1
       '@stoplight/spectral-runtime': 1.1.2
       '@stoplight/types': 13.20.0
       chalk: 4.1.2
@@ -3105,7 +3108,7 @@ snapshots:
       '@stoplight/spectral-parsers': 1.0.4
       '@stoplight/spectral-ref-resolver': 1.0.4
       '@stoplight/spectral-ruleset-migrator': 1.10.0
-      '@stoplight/spectral-rulesets': 1.20.2
+      '@stoplight/spectral-rulesets': 1.18.1
       '@stoplight/spectral-runtime': 1.1.2
       '@stoplight/types': 13.20.0
       '@types/node': 22.6.1
@@ -3135,7 +3138,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@stoplight/spectral-rulesets@1.20.2':
+  '@stoplight/spectral-rulesets@1.18.1':
     dependencies:
       '@asyncapi/specs': 4.3.1
       '@stoplight/better-ajv-errors': 1.0.3(ajv@8.17.1)
@@ -3149,7 +3152,6 @@ snapshots:
       ajv: 8.17.1
       ajv-formats: 2.1.1(ajv@8.17.1)
       json-schema-traverse: 1.0.0
-      leven: 3.1.0
       lodash: 4.17.21
       tslib: 2.7.0
     transitivePeerDependencies:
