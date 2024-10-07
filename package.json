@@ -6,6 +6,7 @@
     "start:mock": "prism mock ./openapi/main.yaml",
     "lint": "spectral lint ./openapi/main.yaml",
     "generate:ts": "openapi-generator-cli generate -i openapi/main.yaml -g typescript-axios -o ./clients/ts-client/generated",
+    "generate:json": "openapi-generator-cli generate -i openapi/main.yaml -g openapi -o ./openapi/output",
     "release": "semantic-release"
   },
   "devDependencies": {
