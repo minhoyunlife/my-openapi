@@ -1,4 +1,4 @@
-name: Check OpenAPI specs
+name: Check OpenAPI specs and generate unified JSON output
 
 on:
   push:
@@ -6,13 +6,35 @@ on:
       - "openapi/**/*.yaml"
       - "openapi/**/*.yml"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  check:
+  check-and-generate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check api spec files
-        uses: stoplightio/spectral-action@latest
         with:
-          file_glob: "openapi/openapi.yaml"
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: true
+      - name: Check api spec files
+        run: pnpm run lint
+      - name: Generate and commit unified JSON output
+        if: github.ref != 'refs/heads/main'
+        run: |
+          pnpm run generate:json
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add openapi/output/openapi.json
+          git commit -m "chore(openapi): update unified JSON output" || echo "No changes to commit"
+          git push

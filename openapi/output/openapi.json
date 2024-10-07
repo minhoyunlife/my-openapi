@@ -1,0 +1,231 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "description" : "API specs for building MY projects.",
+    "title" : "MY Projects REST API",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "http://api.example.com/v1"
+  } ],
+  "tags" : [ {
+    "description" : "팬아트 작품 관리와 관련된 오퍼레이션",
+    "name" : "Artworks"
+  } ],
+  "paths" : {
+    "/artworks" : {
+      "get" : {
+        "description" : "작품 목록 취득",
+        "operationId" : "getArtworks",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/getArtworks_200_response_inner"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "작품 목록이 반환됨"
+          }
+        },
+        "tags" : [ "Artworks" ]
+      },
+      "post" : {
+        "description" : "새로운 작품 등록",
+        "operationId" : "createArtwork",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/createArtwork_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/getArtworks_200_response_inner"
+                }
+              }
+            },
+            "description" : "작품이 성공적으로 등록됨"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/createArtwork_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청"
+          }
+        },
+        "tags" : [ "Artworks" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getArtworks_200_response_inner" : {
+        "example" : {
+          "id" : "some identifier",
+          "title" : "젤다의 전설: 야생의 숨결",
+          "imageUrl" : "https://example.com/images/botw.jpg",
+          "createdAt" : "2023-05-20T14:45:00Z",
+          "genres" : [ "액션", "어드벤처", "오픈월드" ],
+          "playedOn" : "Switch",
+          "rating" : 5.0,
+          "shortReview" : "광활한 세계와 자유도가 인상적인 걸작"
+        },
+        "properties" : {
+          "id" : {
+            "description" : "작품 식별자",
+            "type" : "string"
+          },
+          "title" : {
+            "description" : "게임 제목",
+            "type" : "string"
+          },
+          "imageUrl" : {
+            "description" : "팬아트 작품 이미지 URL",
+            "format" : "uri",
+            "type" : "string"
+          },
+          "createdAt" : {
+            "description" : "팬아트 작품을 완성한 날짜",
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "genres" : {
+            "description" : "게임의 장르",
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "playedOn" : {
+            "description" : "플레이한 플랫폼",
+            "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
+            "type" : "string"
+          },
+          "rating" : {
+            "description" : "개인적으로 매긴 게임 평점",
+            "format" : "float",
+            "maximum" : 5,
+            "minimum" : 0,
+            "multipleOf" : 0.25,
+            "type" : "number"
+          },
+          "shortReview" : {
+            "description" : "플레이 후 한줄평",
+            "type" : "string"
+          }
+        },
+        "required" : [ "createdAt", "genres", "imageUrl", "playedOn", "rating", "shortReview", "title" ]
+      },
+      "createArtwork_request" : {
+        "allOf" : [ {
+          "example" : {
+            "id" : "some identifier",
+            "title" : "젤다의 전설: 야생의 숨결",
+            "imageUrl" : "https://example.com/images/botw.jpg",
+            "createdAt" : "2023-05-20T14:45:00Z",
+            "genres" : [ "액션", "어드벤처", "오픈월드" ],
+            "playedOn" : "Switch",
+            "rating" : 5.0,
+            "shortReview" : "광활한 세계와 자유도가 인상적인 걸작"
+          },
+          "properties" : {
+            "id" : {
+              "description" : "작품 식별자",
+              "type" : "string"
+            },
+            "title" : {
+              "description" : "게임 제목",
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "description" : "팬아트 작품 이미지 URL",
+              "format" : "uri",
+              "type" : "string"
+            },
+            "createdAt" : {
+              "description" : "팬아트 작품을 완성한 날짜",
+              "format" : "date-time",
+              "type" : "string"
+            },
+            "genres" : {
+              "description" : "게임의 장르",
+              "items" : {
+                "type" : "string"
+              },
+              "type" : "array"
+            },
+            "playedOn" : {
+              "description" : "플레이한 플랫폼",
+              "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
+              "type" : "string"
+            },
+            "rating" : {
+              "description" : "개인적으로 매긴 게임 평점",
+              "format" : "float",
+              "maximum" : 5,
+              "minimum" : 0,
+              "multipleOf" : 0.25,
+              "type" : "number"
+            },
+            "shortReview" : {
+              "description" : "플레이 후 한줄평",
+              "type" : "string"
+            }
+          },
+          "required" : [ "createdAt", "genres", "imageUrl", "playedOn", "rating", "shortReview", "title" ]
+        }, {
+          "properties" : {
+            "id" : { }
+          }
+        } ]
+      },
+      "createArtwork_400_response" : {
+        "example" : {
+          "status" : 400,
+          "message" : "입력 데이터가 유효하지 않습니다.",
+          "details" : [ {
+            "field" : "title",
+            "message" : "제목은 필수 항목입니다."
+          }, {
+            "field" : "rating",
+            "message" : "평점은 0에서 5 사이의 값이어야 합니다."
+          } ]
+        },
+        "properties" : {
+          "status" : {
+            "description" : "에러 상태 코드",
+            "type" : "integer"
+          },
+          "message" : {
+            "description" : "에러 메시지",
+            "type" : "string"
+          },
+          "details" : {
+            "description" : "추가적인 에러 세부 정보",
+            "items" : {
+              "type" : "object"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "message", "status" ]
+      }
+    }
+  }
+}
