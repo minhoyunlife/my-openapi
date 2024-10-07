@@ -3,9 +3,9 @@
   "description": "OpenAPI specs for MY projects",
   "author": "Minho Yun",
   "scripts": {
-    "start:mock": "prism mock ./openapi/openapi.yaml",
-    "lint": "spectral lint ./openapi/openapi.yaml",
-    "generate:ts": "openapi-generator-cli generate -i openapi/openapi.yaml -g typescript-axios -o ./clients/ts-client/generated",
+    "start:mock": "prism mock ./openapi/main.yaml",
+    "lint": "spectral lint ./openapi/main.yaml",
+    "generate:ts": "openapi-generator-cli generate -i openapi/main.yaml -g typescript-axios -o ./clients/ts-client/generated",
     "release": "semantic-release"
   },
   "devDependencies": {

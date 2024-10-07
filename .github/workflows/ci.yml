@@ -15,4 +15,4 @@ jobs:
       - name: Check api spec files
         uses: stoplightio/spectral-action@latest
         with:
-          file_glob: "openapi/openapi.yaml"
+          file_glob: "openapi/main.yaml"
