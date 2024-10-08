@@ -12,7 +12,7 @@ Error:
       description: 에러 메시지
     details:
       type: array
-      description: 추가적인 에러 세부 정보
+      description: 에러 세부 정보
       items:
         type: object
   example:
