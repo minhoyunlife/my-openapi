@@ -1,0 +1,39 @@
+name: "Check PR title if it follows Conventional Commits"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions:
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        id: check_pr_title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Add sticky comment if PR title is not valid
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: always() && (steps.check_pr_title.outputs.error_message != null)
+        with:
+          header: pr-title-check-error
+          message: |
+            PR를 생성하셨군요!👋🏼
+            그렇지만 PR 제목이 [Conventional Commits 사양](https://www.conventionalcommits.org/en/v1.0.0/)을 따르지 않고 있네요.
+            상세정보:
+            ```
+            ${{ steps.check_pr_title.outputs.error_message }}
+            ```
+      - name: Delete sticky comment if PR title is valid
+        if: ${{ steps.check_pr_title.outputs.error_message == null }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-title-check-error
+          delete: true
