@@ -1,0 +1,15 @@
+# 리스폰스용 스키마
+Genre:
+  allOf:
+    - $ref: "./base.yaml#/GenreBase"
+    - type: object
+      properties:
+        id:
+          type: string
+          description: 장르 식별자
+      required:
+        - id
+        - name
+  example:
+    id: "<nanoid format>"
+    name: "Action"

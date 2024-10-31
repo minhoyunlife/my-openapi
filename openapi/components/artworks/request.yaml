@@ -1,0 +1,22 @@
+# 생성 리퀘스트용 스키마
+CreateArtworkRequest:
+  required:
+    - title
+    - imageUrl
+  allOf:
+    - $ref: "./base.yaml#/ArtworkBase"
+    - type: object
+      properties:
+        genres:
+          type: array
+          items:
+            type: string
+          description: 게임의 장르명 목록
+      example:
+        title: "젤다의 전설: 야생의 숨결"
+        imageUrl: "https://example.com/images/botw.jpg"
+        createdAt: "2023-05-20T14:45:00Z"
+        genres: ["액션", "어드벤처"]
+        playedOn: "Switch"
+        rating: 20
+        shortReview: "광활한 세계와 자유도가 인상적인 걸작"

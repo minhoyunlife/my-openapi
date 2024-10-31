@@ -1,0 +1,41 @@
+# 리스폰스용 스키마
+Artwork:
+  allOf:
+    - $ref: "./base.yaml#/ArtworkBase"
+    - type: object
+      properties:
+        id:
+          type: string
+          description: 작품 식별자
+        genres:
+          type: array
+          items:
+            $ref: "../genres/response.yaml#/Genre"
+        isDraft:
+          type: boolean
+          description: 작품의 임시저장 상태 여부
+      required:
+        - id
+        - title
+        - imageUrl
+        - createdAt
+        - genres
+        - playedOn
+        - rating
+        - shortReview
+        - isDraft
+  example:
+    id: "<nanoid format>"
+    title: "젤다의 전설: 야생의 숨결"
+    imageUrl: "https://example.com/images/botw.jpg"
+    createdAt: "2023-05-20T14:45:00Z"
+    genres:
+      [
+        { id: "<nanoid format>", name: "액션" },
+        { id: "<nanoid format>", name: "어드벤처" },
+        { id: "<nanoid format>", name: "오픈월드" },
+      ]
+    playedOn: "Switch"
+    rating: 20
+    shortReview: "광활한 세계와 자유도가 인상적인 걸작"
+    isDraft: false
