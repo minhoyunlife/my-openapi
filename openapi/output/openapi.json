@@ -71,6 +71,45 @@
         },
         "tags" : [ "Artworks" ]
       }
+    },
+    "/artworks/images" : {
+      "post" : {
+        "description" : "새로운 작품 등록",
+        "operationId" : "uploadArtworkImage",
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/uploadArtworkImage_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/uploadArtworkImage_200_response"
+                }
+              }
+            },
+            "description" : "작품 이미지가 성공적으로 업로드됨"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/createArtwork_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청"
+          }
+        },
+        "tags" : [ "Artworks" ]
+      }
     }
   },
   "components" : {
@@ -148,6 +187,14 @@
           "isDraft" : false
         }
       },
+      "uploadArtworkImage_request" : {
+        "properties" : {
+          "image" : {
+            "format" : "binary",
+            "type" : "string"
+          }
+        }
+      },
       "getArtworks_200_response_inner_allOf_genres_inner" : {
         "allOf" : [ {
           "properties" : {
@@ -168,6 +215,14 @@
         "example" : {
           "id" : "<nanoid format>",
           "name" : "Action"
+        }
+      },
+      "uploadArtworkImage_200_response" : {
+        "properties" : {
+          "imageUrl" : {
+            "description" : "업로드한 작품 이미지의 공개 URL",
+            "type" : "string"
+          }
         }
       },
       "createArtwork_request" : {
