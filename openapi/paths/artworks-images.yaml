@@ -1,0 +1,24 @@
+post:
+  description: 새로운 작품 등록
+  operationId: uploadArtworkImage
+  tags:
+    - Artworks
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          $ref: "../components/artworks-images/request.yaml#/UploadArtworkImageRequest"
+  responses:
+    "200":
+      description: 작품 이미지가 성공적으로 업로드됨
+      content:
+        application/json:
+          schema:
+            $ref: "../components/artworks-images/response.yaml#/UploadArtworkImageResponse"
+    "400":
+      description: 잘못된 요청
+      content:
+        application/json:
+          schema:
+            $ref: "../components/errors.yaml#/Error"
