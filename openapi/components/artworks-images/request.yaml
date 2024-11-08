@@ -1,0 +1,6 @@
+UploadArtworkImageRequest:
+  type: object
+  properties:
+    image:
+      type: string
+      format: binary

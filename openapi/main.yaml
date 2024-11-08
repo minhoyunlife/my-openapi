@@ -11,3 +11,5 @@ tags:
 paths:
   /artworks:
     $ref: "./paths/artworks.yaml"
+  /artworks/images:
+    $ref: "./paths/artworks-images.yaml"
