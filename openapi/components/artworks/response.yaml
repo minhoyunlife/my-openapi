@@ -7,6 +7,14 @@ Artwork:
         id:
           type: string
           description: 작품 식별자
+        imageUrl:
+          type: string
+          format: uri
+          description: |
+            팬아트 작품 이미지 URL
+            권한에 따라 다른 형태의 URL이 제공됨
+            - 일반 사용자: 1시간 유효한 서명된 URL
+            - 작품 등록자: 직접 접근 가능한 URL
         genres:
           type: array
           items:

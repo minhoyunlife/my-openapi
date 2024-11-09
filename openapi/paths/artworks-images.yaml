@@ -1,5 +1,5 @@
 post:
-  description: 새로운 작품 등록
+  description: 작품 이미지 업로드
   operationId: uploadArtworkImage
   tags:
     - Artworks
