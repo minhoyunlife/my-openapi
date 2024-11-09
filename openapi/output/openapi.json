@@ -74,7 +74,7 @@
     },
     "/artworks/images" : {
       "post" : {
-        "description" : "새로운 작품 등록",
+        "description" : "작품 이미지 업로드",
         "operationId" : "uploadArtworkImage",
         "requestBody" : {
           "content" : {
@@ -121,11 +121,6 @@
               "description" : "게임 제목",
               "type" : "string"
             },
-            "imageUrl" : {
-              "description" : "팬아트 작품 이미지 URL",
-              "format" : "uri",
-              "type" : "string"
-            },
             "createdAt" : {
               "description" : "팬아트 작품을 완성한 날짜",
               "format" : "date-time",
@@ -153,6 +148,11 @@
               "description" : "작품 식별자",
               "type" : "string"
             },
+            "imageUrl" : {
+              "description" : "팬아트 작품 이미지 URL\n권한에 따라 다른 형태의 URL이 제공됨\n- 일반 사용자: 1시간 유효한 서명된 URL\n- 작품 등록자: 직접 접근 가능한 URL\n",
+              "format" : "uri",
+              "type" : "string"
+            },
             "genres" : {
               "items" : {
                 "$ref" : "#/components/schemas/getArtworks_200_response_inner_allOf_genres_inner"
@@ -164,7 +164,7 @@
               "type" : "boolean"
             }
           },
-          "required" : [ "genres", "id", "isDraft" ]
+          "required" : [ "genres", "id", "imageUrl", "isDraft" ]
         } ],
         "example" : {
           "id" : "<nanoid format>",
@@ -190,10 +190,12 @@
       "uploadArtworkImage_request" : {
         "properties" : {
           "image" : {
+            "description" : "업로드할 작품 이미지 파일의 바이너리 문자열",
             "format" : "binary",
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "image" ]
       },
       "getArtworks_200_response_inner_allOf_genres_inner" : {
         "allOf" : [ {
@@ -219,22 +221,18 @@
       },
       "uploadArtworkImage_200_response" : {
         "properties" : {
-          "imageUrl" : {
-            "description" : "업로드한 작품 이미지의 공개 URL",
+          "imageKey" : {
+            "description" : "S3에 저장된 이미지의 키 값",
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "imageKey" ]
       },
       "createArtwork_request" : {
         "allOf" : [ {
           "properties" : {
             "title" : {
               "description" : "게임 제목",
-              "type" : "string"
-            },
-            "imageUrl" : {
-              "description" : "팬아트 작품 이미지 URL",
-              "format" : "uri",
               "type" : "string"
             },
             "createdAt" : {
@@ -261,7 +259,7 @@
         }, {
           "example" : {
             "title" : "젤다의 전설: 야생의 숨결",
-            "imageUrl" : "https://example.com/images/botw.jpg",
+            "imageKey" : "artworks/2024/03/abc123def456",
             "createdAt" : "2023-05-20T14:45:00Z",
             "genres" : [ "액션", "어드벤처" ],
             "playedOn" : "Switch",
@@ -269,6 +267,10 @@
             "shortReview" : "광활한 세계와 자유도가 인상적인 걸작"
           },
           "properties" : {
+            "imageKey" : {
+              "description" : "S3에 저장된 이미지의 키 값",
+              "type" : "string"
+            },
             "genres" : {
               "description" : "게임의 장르명 목록",
               "items" : {
@@ -278,7 +280,7 @@
             }
           }
         } ],
-        "required" : [ "imageUrl", "title" ]
+        "required" : [ "imageKey", "title" ]
       },
       "createArtwork_400_response" : {
         "example" : {
