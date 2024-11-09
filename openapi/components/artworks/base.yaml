@@ -5,10 +5,6 @@ ArtworkBase:
     title:
       type: string
       description: 게임 제목
-    imageUrl:
-      type: string
-      format: uri
-      description: 팬아트 작품 이미지 URL
     createdAt:
       type: string
       format: date-time
