@@ -87,11 +87,11 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
+          "201" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/uploadArtworkImage_200_response"
+                  "$ref" : "#/components/schemas/uploadArtworkImage_201_response"
                 }
               }
             },
@@ -219,15 +219,6 @@
           "name" : "Action"
         }
       },
-      "uploadArtworkImage_200_response" : {
-        "properties" : {
-          "imageKey" : {
-            "description" : "S3에 저장된 이미지의 키 값",
-            "type" : "string"
-          }
-        },
-        "required" : [ "imageKey" ]
-      },
       "createArtwork_request" : {
         "allOf" : [ {
           "properties" : {
@@ -281,6 +272,15 @@
           }
         } ],
         "required" : [ "imageKey", "title" ]
+      },
+      "uploadArtworkImage_201_response" : {
+        "properties" : {
+          "imageKey" : {
+            "description" : "S3에 저장된 이미지의 키 값",
+            "type" : "string"
+          }
+        },
+        "required" : [ "imageKey" ]
       },
       "createArtwork_400_response" : {
         "example" : {
