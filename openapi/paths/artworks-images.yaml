@@ -10,7 +10,7 @@ post:
         schema:
           $ref: "../components/artworks-images/request.yaml#/UploadArtworkImageRequest"
   responses:
-    "200":
+    "201":
       description: 작품 이미지가 성공적으로 업로드됨
       content:
         application/json:
