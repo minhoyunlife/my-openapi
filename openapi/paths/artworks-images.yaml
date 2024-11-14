@@ -22,3 +22,9 @@ post:
         application/json:
           schema:
             $ref: "../components/errors.yaml#/Error"
+    "413":
+      description: 업로드 파일 용량 제한(100MB) 초과
+      content:
+        application/json:
+          schema:
+            $ref: "../components/errors.yaml#/Error"

@@ -106,6 +106,16 @@
               }
             },
             "description" : "잘못된 요청"
+          },
+          "413" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/createArtwork_400_response"
+                }
+              }
+            },
+            "description" : "업로드 파일 용량 제한(100MB) 초과"
           }
         },
         "tags" : [ "Artworks" ]
