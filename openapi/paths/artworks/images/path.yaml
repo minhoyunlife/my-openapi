@@ -1,6 +1,8 @@
 post:
   description: 작품 이미지 업로드
   operationId: uploadArtworkImage
+  security:
+    - bearerAuth: []
   tags:
     - Artworks
   requestBody:
@@ -8,23 +10,29 @@ post:
     content:
       multipart/form-data:
         schema:
-          $ref: "../components/artworks-images/request.yaml#/UploadArtworkImageRequest"
+          $ref: "../../../components/artworks/request.yaml#/UploadArtworkImageRequest"
   responses:
     "201":
       description: 작품 이미지가 성공적으로 업로드됨
       content:
         application/json:
           schema:
-            $ref: "../components/artworks-images/response.yaml#/UploadArtworkImageResponse"
+            $ref: "../../../components/artworks/response.yaml#/UploadArtworkImageResponse"
     "400":
       description: 잘못된 요청
       content:
         application/json:
           schema:
-            $ref: "../components/errors.yaml#/Error"
+            $ref: "../../../components/errors/errors.yaml#/BadRequestError"
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/UnauthorizedError"
     "413":
       description: 업로드 파일 용량 제한(100MB) 초과
       content:
         application/json:
           schema:
-            $ref: "../components/errors.yaml#/Error"
+            $ref: "../../../components/errors/errors.yaml#/PayloadTooLargeError"

@@ -1,0 +1,26 @@
+post:
+  description: 2FA 코드 검증
+  operationId: verify2FA
+  security:
+    - tempAuth: []
+  tags:
+    - Auth
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../../components/auth/request.yaml#/TwoFactorVerifyRequest"
+  responses:
+    "200":
+      description: 2FA 인증 성공 및 최종 토큰 발급
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/auth/response.yaml#/LoginResponse"
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/errors/errors.yaml#/UnauthorizedError"

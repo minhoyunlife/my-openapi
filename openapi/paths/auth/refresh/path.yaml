@@ -1,0 +1,20 @@
+post:
+  description: Access Token 갱신
+  operationId: refreshToken
+  security:
+    - cookieAuth: []
+  tags:
+    - Auth
+  responses:
+    "200":
+      description: 토큰 갱신 성공
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/auth/response.yaml#/LoginResponse"
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/UnauthorizedError"

@@ -9,10 +9,155 @@
     "url" : "http://api.example.com/v1"
   } ],
   "tags" : [ {
+    "description" : "인증 관련 오퍼레이션",
+    "name" : "Auth"
+  }, {
     "description" : "팬아트 작품 관리와 관련된 오퍼레이션",
     "name" : "Artworks"
   } ],
   "paths" : {
+    "/auth/github" : {
+      "get" : {
+        "description" : "GitHub OAuth로 로그인",
+        "operationId" : "login",
+        "responses" : {
+          "302" : {
+            "description" : "GitHub 로그인 페이지로 리다이렉트"
+          }
+        },
+        "security" : [ ],
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/github/callback" : {
+      "get" : {
+        "description" : "GitHub OAuth 콜백 처리",
+        "operationId" : "handleGithubOAuthCallback",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/handleGithubOAuthCallback_200_response"
+                }
+              }
+            },
+            "description" : "GitHub 인증 성공 및 2FA 필요"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/handleGithubOAuthCallback_403_response"
+                }
+              }
+            },
+            "description" : "권한 부재"
+          }
+        },
+        "security" : [ ],
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/2fa/verify" : {
+      "post" : {
+        "description" : "2FA 코드 검증",
+        "operationId" : "verify2FA",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/verify2FA_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_200_response"
+                }
+              }
+            },
+            "description" : "2FA 인증 성공 및 최종 토큰 발급"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          }
+        },
+        "security" : [ {
+          "tempAuth" : [ ]
+        } ],
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/refresh" : {
+      "post" : {
+        "description" : "Access Token 갱신",
+        "operationId" : "refreshToken",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_200_response"
+                }
+              }
+            },
+            "description" : "토큰 갱신 성공"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          }
+        },
+        "security" : [ {
+          "cookieAuth" : [ ]
+        } ],
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "description" : "로그아웃",
+        "operationId" : "logout",
+        "responses" : {
+          "200" : {
+            "description" : "로그아웃 성공"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "tags" : [ "Auth" ]
+      }
+    },
     "/artworks" : {
       "get" : {
         "description" : "작품 목록 취득",
@@ -32,6 +177,7 @@
             "description" : "작품 목록이 반환됨"
           }
         },
+        "security" : [ ],
         "tags" : [ "Artworks" ]
       },
       "post" : {
@@ -67,8 +213,21 @@
               }
             },
             "description" : "잘못된 요청"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
           }
         },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
         "tags" : [ "Artworks" ]
       }
     },
@@ -107,23 +266,66 @@
             },
             "description" : "잘못된 요청"
           },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          },
           "413" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/createArtwork_400_response"
+                  "$ref" : "#/components/schemas/uploadArtworkImage_413_response"
                 }
               }
             },
             "description" : "업로드 파일 용량 제한(100MB) 초과"
           }
         },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
         "tags" : [ "Artworks" ]
       }
     }
   },
   "components" : {
     "schemas" : {
+      "handleGithubOAuthCallback_200_response" : {
+        "properties" : {
+          "tempToken" : {
+            "description" : "2FA 인증 완료 전까지 사용할 임시 토큰",
+            "type" : "string"
+          }
+        },
+        "required" : [ "tempToken" ]
+      },
+      "verify2FA_200_response" : {
+        "properties" : {
+          "accessToken" : {
+            "description" : "일정 시간 유효한 JWT 액세스 토큰",
+            "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "type" : "string"
+          }
+        },
+        "required" : [ "accessToken" ]
+      },
+      "verify2FA_request" : {
+        "properties" : {
+          "code" : {
+            "description" : "TOTP 6자리 코드",
+            "example" : "123456",
+            "pattern" : "^[0-9]{6}$",
+            "type" : "string"
+          }
+        },
+        "required" : [ "code" ]
+      },
       "getArtworks_200_response_inner" : {
         "allOf" : [ {
           "properties" : {
@@ -229,6 +431,32 @@
           "name" : "Action"
         }
       },
+      "uploadArtworkImage_413_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "message" ]
+        }, {
+          "example" : {
+            "message" : "파일 용량 제한을 초과했습니다",
+            "errors" : {
+              "imageFile" : [ "최대 100MB까지만 업로드 가능합니다" ]
+            }
+          }
+        } ]
+      },
       "createArtwork_request" : {
         "allOf" : [ {
           "properties" : {
@@ -292,30 +520,97 @@
         },
         "required" : [ "imageKey" ]
       },
-      "createArtwork_400_response" : {
-        "example" : {
-          "message" : "입력 데이터가 유효하지 않습니다.",
-          "errors" : {
-            "title" : [ "제목은 비어 있을 수 없습니다." ],
-            "imageUrl" : [ "imageUrl은 유효한 URL이어야 합니다." ],
-            "rating" : [ "rating은 0과 20 사이의 숫자여야 합니다." ]
-          }
-        },
-        "properties" : {
-          "message" : {
-            "description" : "전반적인 에러 메시지",
-            "type" : "string"
-          },
-          "errors" : {
-            "additionalProperties" : {
-              "items" : {
-                "type" : "string"
-              }
+      "handleGithubOAuthCallback_403_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
             },
-            "description" : "필드별 에러 메시지"
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "message" ]
+        }, {
+          "example" : {
+            "message" : "접근 권한이 없습니다"
           }
-        },
-        "required" : [ "message" ]
+        } ]
+      },
+      "createArtwork_400_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "message" ]
+        }, {
+          "example" : {
+            "message" : "입력값이 유효하지 않습니다",
+            "errors" : {
+              "title" : [ "제목은 필수입니다", "제목은 100자를 초과할 수 없습니다" ],
+              "playedOn" : [ "지원하지 않는 플랫폼입니다" ]
+            }
+          }
+        } ]
+      },
+      "verify2FA_401_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "message" ]
+        }, {
+          "example" : {
+            "message" : "인증에 실패하였습니다"
+          }
+        } ]
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "bearerFormat" : "JWT",
+        "description" : "JWT 액세스 토큰을 Bearer 스키마로 전달",
+        "scheme" : "bearer",
+        "type" : "http"
+      },
+      "cookieAuth" : {
+        "description" : "리프레시 토큰이 저장된 HTTP-only 쿠키",
+        "in" : "cookie",
+        "name" : "refresh_token",
+        "type" : "apiKey"
+      },
+      "tempAuth" : {
+        "description" : "2FA 인증 완료 전 사용되는 임시 토큰",
+        "scheme" : "bearer",
+        "type" : "http"
       }
     }
   }

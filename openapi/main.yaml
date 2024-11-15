@@ -5,11 +5,42 @@ info:
   version: 0.0.1
 servers:
   - url: http://api.example.com/v1 # 나중에 수정
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT 액세스 토큰을 Bearer 스키마로 전달
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: refresh_token
+      description: 리프레시 토큰이 저장된 HTTP-only 쿠키
+    tempAuth:
+      type: http
+      scheme: bearer
+      description: 2FA 인증 완료 전 사용되는 임시 토큰
 tags:
+  - name: Auth
+    description: 인증 관련 오퍼레이션
   - name: Artworks
     description: 팬아트 작품 관리와 관련된 오퍼레이션
 paths:
+  # 인증
+  /auth/github:
+    $ref: "./paths/auth/github/path.yaml"
+  /auth/github/callback:
+    $ref: "./paths/auth/github/callback/path.yaml"
+  /auth/2fa/verify:
+    $ref: "./paths/auth/2fa/verify/path.yaml"
+  /auth/refresh:
+    $ref: "./paths/auth/refresh/path.yaml"
+  /auth/logout:
+    $ref: "./paths/auth/logout/path.yaml"
+
+  # 아트워크
   /artworks:
-    $ref: "./paths/artworks.yaml"
+    $ref: "./paths/artworks/path.yaml"
   /artworks/images:
-    $ref: "./paths/artworks-images.yaml"
+    $ref: "./paths/artworks/images/path.yaml"

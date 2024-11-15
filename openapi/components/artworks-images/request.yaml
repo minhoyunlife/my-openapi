@@ -1,9 +1,0 @@
-UploadArtworkImageRequest:
-  type: object
-  properties:
-    image:
-      type: string
-      format: binary
-      description: 업로드할 작품 이미지 파일의 바이너리 문자열
-  required:
-    - image

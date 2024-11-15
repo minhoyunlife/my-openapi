@@ -1,0 +1,19 @@
+get:
+  description: GitHub OAuth 콜백 처리
+  operationId: handleGithubOAuthCallback
+  security: []
+  tags:
+    - Auth
+  responses:
+    "200":
+      description: GitHub 인증 성공 및 2FA 필요
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/auth/response.yaml#/TempTokenResponse"
+    "403":
+      description: 권한 부재
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/errors/errors.yaml#/ForbiddenError"

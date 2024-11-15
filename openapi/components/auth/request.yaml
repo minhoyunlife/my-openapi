@@ -1,0 +1,11 @@
+# 2FA 인증용
+TwoFactorVerifyRequest:
+  type: object
+  required:
+    - code
+  properties:
+    code:
+      type: string
+      description: TOTP 6자리 코드
+      pattern: "^[0-9]{6}$"
+      example: "123456"

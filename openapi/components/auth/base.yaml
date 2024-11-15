@@ -1,0 +1,8 @@
+TokenBase:
+  type: object
+  required:
+    - accessToken
+  properties:
+    accessToken:
+      type: string
+      description: "일정 기간 유효한 JWT 액세스 토큰"

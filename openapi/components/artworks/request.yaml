@@ -23,3 +23,14 @@ CreateArtworkRequest:
         playedOn: "Switch"
         rating: 20
         shortReview: "광활한 세계와 자유도가 인상적인 걸작"
+
+# 업로드 이미지 리퀘스트용 스키마
+UploadArtworkImageRequest:
+  type: object
+  properties:
+    image:
+      type: string
+      format: binary
+      description: 업로드할 작품 이미지 파일의 바이너리 문자열
+  required:
+    - image
