@@ -1,0 +1,32 @@
+BadRequestError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 입력값이 유효하지 않습니다
+        errors:
+          title:
+            - 제목은 필수입니다
+            - 제목은 100자를 초과할 수 없습니다
+          playedOn:
+            - 지원하지 않는 플랫폼입니다
+
+UnauthorizedError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 인증에 실패하였습니다
+
+ForbiddenError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 접근 권한이 없습니다
+
+PayloadTooLargeError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 파일 용량 제한을 초과했습니다
+        errors:
+          imageFile:
+            - 최대 100MB까지만 업로드 가능합니다

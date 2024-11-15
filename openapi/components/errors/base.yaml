@@ -1,0 +1,15 @@
+ErrorBase:
+  type: object
+  required:
+    - message
+  properties:
+    message:
+      type: string
+      description: 에러 메시지
+    errors:
+      type: object
+      description: 상세 에러 정보
+      additionalProperties:
+        type: array
+        items:
+          type: string

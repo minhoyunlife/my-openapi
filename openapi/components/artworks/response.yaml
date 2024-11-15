@@ -1,4 +1,4 @@
-# 리스폰스용 스키마
+# 아트워크 리스폰스용 스키마
 Artwork:
   allOf:
     - $ref: "./base.yaml#/ArtworkBase"
@@ -47,3 +47,13 @@ Artwork:
     rating: 20
     shortReview: "광활한 세계와 자유도가 인상적인 걸작"
     isDraft: false
+
+# 업로드 이미지 리스폰스용 스키마
+UploadArtworkImageResponse:
+  type: object
+  properties:
+    imageKey:
+      type: string
+      description: S3에 저장된 이미지의 키 값
+  required:
+    - imageKey

@@ -1,0 +1,16 @@
+post:
+  description: 로그아웃
+  operationId: logout
+  security:
+    - bearerAuth: []
+  tags:
+    - Auth
+  responses:
+    "200":
+      description: 로그아웃 성공
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/UnauthorizedError"

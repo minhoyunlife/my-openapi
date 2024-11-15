@@ -1,0 +1,20 @@
+# 임시 토큰 리스폰스
+TempTokenResponse:
+  type: object
+  required:
+    - tempToken
+  properties:
+    tempToken:
+      type: string
+      description: 2FA 인증 완료 전까지 사용할 임시 토큰
+
+# 최종 로그인 후 리스폰스
+LoginResponse:
+  type: object
+  required:
+    - accessToken
+  properties:
+    accessToken:
+      type: string
+      description: 일정 시간 유효한 JWT 액세스 토큰
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."

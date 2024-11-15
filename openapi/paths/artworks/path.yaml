@@ -1,6 +1,7 @@
 get:
   description: 작품 목록 취득
   operationId: getArtworks
+  security: []
   tags:
     - Artworks
   responses:
@@ -11,11 +12,13 @@ get:
           schema:
             type: array
             items:
-              $ref: "../components/artworks/response.yaml#/Artwork"
+              $ref: "../../components/artworks/response.yaml#/Artwork"
 
 post:
   description: 새로운 작품 등록
   operationId: createArtwork
+  security:
+    - bearerAuth: []
   tags:
     - Artworks
   requestBody:
@@ -23,17 +26,23 @@ post:
     content:
       application/json:
         schema:
-          $ref: "../components/artworks/request.yaml#/CreateArtworkRequest"
+          $ref: "../../components/artworks/request.yaml#/CreateArtworkRequest"
   responses:
     "201":
       description: 작품이 성공적으로 등록됨
       content:
         application/json:
           schema:
-            $ref: "../components/artworks/response.yaml#/Artwork"
+            $ref: "../../components/artworks/response.yaml#/Artwork"
     "400":
       description: 잘못된 요청
       content:
         application/json:
           schema:
-            $ref: "../components/errors.yaml#/Error"
+            $ref: "../../components/errors/errors.yaml#/BadRequestError"
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/errors/errors.yaml#/UnauthorizedError"
