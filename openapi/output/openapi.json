@@ -59,6 +59,48 @@
         "tags" : [ "Auth" ]
       }
     },
+    "/auth/2fa/setup" : {
+      "get" : {
+        "description" : "2FA 설정을 위한 QR코드와 수동 입력 키를 생성",
+        "operationId" : "setup2FA",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_200_response"
+                }
+              }
+            },
+            "description" : "TOTP 설정 정보"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          }
+        },
+        "security" : [ {
+          "tempAuth" : [ ]
+        } ],
+        "tags" : [ "Auth" ]
+      }
+    },
     "/auth/2fa/verify" : {
       "post" : {
         "description" : "2FA 코드 검증",
@@ -84,11 +126,21 @@
             },
             "description" : "2FA 인증 성공 및 최종 토큰 발급"
           },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청"
+          },
           "401" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
                 }
               }
             },
@@ -110,7 +162,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_200_response"
+                  "$ref" : "#/components/schemas/refreshToken_200_response"
                 }
               }
             },
@@ -120,7 +172,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
                 }
               }
             },
@@ -145,7 +197,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
                 }
               }
             },
@@ -208,7 +260,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/createArtwork_400_response"
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
                 }
               }
             },
@@ -218,7 +270,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
                 }
               }
             },
@@ -260,7 +312,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/createArtwork_400_response"
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
                 }
               }
             },
@@ -270,7 +322,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_401_response"
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
                 }
               }
             },
@@ -296,118 +348,23 @@
   },
   "components" : {
     "schemas" : {
-      "handleGithubOAuthCallback_200_response" : {
-        "properties" : {
-          "tempToken" : {
-            "description" : "2FA 인증 완료 전까지 사용할 임시 토큰",
-            "type" : "string"
-          }
-        },
-        "required" : [ "tempToken" ]
-      },
       "verify2FA_200_response" : {
         "properties" : {
           "accessToken" : {
             "description" : "일정 시간 유효한 JWT 액세스 토큰",
             "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
             "type" : "string"
+          },
+          "backupCodes" : {
+            "description" : "백업 코드 목록 (초기 설정 시에만 제공)",
+            "items" : {
+              "example" : "1234-5678",
+              "type" : "string"
+            },
+            "type" : "array"
           }
         },
         "required" : [ "accessToken" ]
-      },
-      "verify2FA_request" : {
-        "properties" : {
-          "code" : {
-            "description" : "TOTP 6자리 코드",
-            "example" : "123456",
-            "pattern" : "^[0-9]{6}$",
-            "type" : "string"
-          }
-        },
-        "required" : [ "code" ]
-      },
-      "getArtworks_200_response_inner" : {
-        "allOf" : [ {
-          "properties" : {
-            "title" : {
-              "description" : "게임 제목",
-              "type" : "string"
-            },
-            "createdAt" : {
-              "description" : "팬아트 작품을 완성한 날짜",
-              "format" : "date-time",
-              "type" : "string"
-            },
-            "playedOn" : {
-              "description" : "플레이한 플랫폼",
-              "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
-              "type" : "string"
-            },
-            "rating" : {
-              "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
-              "maximum" : 20,
-              "minimum" : 0,
-              "type" : "integer"
-            },
-            "shortReview" : {
-              "description" : "플레이 후 한줄평",
-              "type" : "string"
-            }
-          }
-        }, {
-          "properties" : {
-            "id" : {
-              "description" : "작품 식별자",
-              "type" : "string"
-            },
-            "imageUrl" : {
-              "description" : "팬아트 작품 이미지 URL\n권한에 따라 다른 형태의 URL이 제공됨\n- 일반 사용자: 1시간 유효한 서명된 URL\n- 작품 등록자: 직접 접근 가능한 URL\n",
-              "format" : "uri",
-              "type" : "string"
-            },
-            "genres" : {
-              "items" : {
-                "$ref" : "#/components/schemas/getArtworks_200_response_inner_allOf_genres_inner"
-              },
-              "type" : "array"
-            },
-            "isDraft" : {
-              "description" : "작품의 임시저장 상태 여부",
-              "type" : "boolean"
-            }
-          },
-          "required" : [ "genres", "id", "imageUrl", "isDraft" ]
-        } ],
-        "example" : {
-          "id" : "<nanoid format>",
-          "title" : "젤다의 전설: 야생의 숨결",
-          "imageUrl" : "https://example.com/images/botw.jpg",
-          "createdAt" : "2023-05-20T14:45:00Z",
-          "genres" : [ {
-            "id" : "<nanoid format>",
-            "name" : "액션"
-          }, {
-            "id" : "<nanoid format>",
-            "name" : "어드벤처"
-          }, {
-            "id" : "<nanoid format>",
-            "name" : "오픈월드"
-          } ],
-          "playedOn" : "Switch",
-          "rating" : 20,
-          "shortReview" : "광활한 세계와 자유도가 인상적인 걸작",
-          "isDraft" : false
-        }
-      },
-      "uploadArtworkImage_request" : {
-        "properties" : {
-          "image" : {
-            "description" : "업로드할 작품 이미지 파일의 바이너리 문자열",
-            "format" : "binary",
-            "type" : "string"
-          }
-        },
-        "required" : [ "image" ]
       },
       "getArtworks_200_response_inner_allOf_genres_inner" : {
         "allOf" : [ {
@@ -520,6 +477,147 @@
         },
         "required" : [ "imageKey" ]
       },
+      "refreshToken_200_response" : {
+        "properties" : {
+          "accessToken" : {
+            "description" : "일정 시간 유효한 JWT 액세스 토큰",
+            "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "type" : "string"
+          }
+        },
+        "required" : [ "accessToken" ]
+      },
+      "handleGithubOAuthCallback_200_response" : {
+        "properties" : {
+          "tempToken" : {
+            "description" : "2FA 인증 완료 전까지 사용할 임시 토큰",
+            "type" : "string"
+          }
+        },
+        "required" : [ "tempToken" ]
+      },
+      "verify2FA_request" : {
+        "properties" : {
+          "code" : {
+            "description" : "TOTP 6자리 코드",
+            "example" : "123456",
+            "pattern" : "^[0-9]{6}$",
+            "type" : "string"
+          },
+          "setupToken" : {
+            "description" : "TOTP 설정 검증용 임시 토큰(첫 인증 때만)",
+            "example" : "eyJhbGciOiJIUzI1NiIs...",
+            "type" : "string"
+          }
+        },
+        "required" : [ "code" ]
+      },
+      "getArtworks_200_response_inner" : {
+        "allOf" : [ {
+          "properties" : {
+            "title" : {
+              "description" : "게임 제목",
+              "type" : "string"
+            },
+            "createdAt" : {
+              "description" : "팬아트 작품을 완성한 날짜",
+              "format" : "date-time",
+              "type" : "string"
+            },
+            "playedOn" : {
+              "description" : "플레이한 플랫폼",
+              "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
+              "type" : "string"
+            },
+            "rating" : {
+              "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
+              "maximum" : 20,
+              "minimum" : 0,
+              "type" : "integer"
+            },
+            "shortReview" : {
+              "description" : "플레이 후 한줄평",
+              "type" : "string"
+            }
+          }
+        }, {
+          "properties" : {
+            "id" : {
+              "description" : "작품 식별자",
+              "type" : "string"
+            },
+            "imageUrl" : {
+              "description" : "팬아트 작품 이미지 URL\n권한에 따라 다른 형태의 URL이 제공됨\n- 일반 사용자: 1시간 유효한 서명된 URL\n- 작품 등록자: 직접 접근 가능한 URL\n",
+              "format" : "uri",
+              "type" : "string"
+            },
+            "genres" : {
+              "items" : {
+                "$ref" : "#/components/schemas/getArtworks_200_response_inner_allOf_genres_inner"
+              },
+              "type" : "array"
+            },
+            "isDraft" : {
+              "description" : "작품의 임시저장 상태 여부",
+              "type" : "boolean"
+            }
+          },
+          "required" : [ "genres", "id", "imageUrl", "isDraft" ]
+        } ],
+        "example" : {
+          "id" : "<nanoid format>",
+          "title" : "젤다의 전설: 야생의 숨결",
+          "imageUrl" : "https://example.com/images/botw.jpg",
+          "createdAt" : "2023-05-20T14:45:00Z",
+          "genres" : [ {
+            "id" : "<nanoid format>",
+            "name" : "액션"
+          }, {
+            "id" : "<nanoid format>",
+            "name" : "어드벤처"
+          }, {
+            "id" : "<nanoid format>",
+            "name" : "오픈월드"
+          } ],
+          "playedOn" : "Switch",
+          "rating" : 20,
+          "shortReview" : "광활한 세계와 자유도가 인상적인 걸작",
+          "isDraft" : false
+        }
+      },
+      "uploadArtworkImage_request" : {
+        "properties" : {
+          "image" : {
+            "description" : "업로드할 작품 이미지 파일의 바이너리 문자열",
+            "format" : "binary",
+            "type" : "string"
+          }
+        },
+        "required" : [ "image" ]
+      },
+      "setup2FA_401_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "message" ]
+        }, {
+          "example" : {
+            "message" : "인증에 실패하였습니다"
+          }
+        } ]
+      },
       "handleGithubOAuthCallback_403_response" : {
         "allOf" : [ {
           "properties" : {
@@ -543,7 +641,7 @@
           }
         } ]
       },
-      "createArtwork_400_response" : {
+      "setup2FA_400_response" : {
         "allOf" : [ {
           "properties" : {
             "message" : {
@@ -570,28 +668,25 @@
           }
         } ]
       },
-      "verify2FA_401_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
+      "setup2FA_200_response" : {
+        "properties" : {
+          "qrCodeUrl" : {
+            "description" : "TOTP QR 코드 URL",
+            "example" : "otpauth://totp/FanArt:admin@example.com?secret=JBSWY3DPEHPK3PXP&issuer=FanArt",
+            "type" : "string"
           },
-          "required" : [ "message" ]
-        }, {
-          "example" : {
-            "message" : "인증에 실패하였습니다"
+          "manualEntryKey" : {
+            "description" : "수동 입력용 시크릿 키",
+            "example" : "JBSW Y3DP EHPK 3PXP",
+            "type" : "string"
+          },
+          "setupToken" : {
+            "description" : "TOTP 설정 검증용 임시 토큰",
+            "example" : "eyJhbGciOiJIUzI1NiIs...",
+            "type" : "string"
           }
-        } ]
+        },
+        "required" : [ "manualEntryKey", "qrCodeUrl", "setupToken" ]
       }
     },
     "securitySchemes" : {

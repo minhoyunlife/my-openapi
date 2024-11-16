@@ -8,8 +8,46 @@ TempTokenResponse:
       type: string
       description: 2FA 인증 완료 전까지 사용할 임시 토큰
 
-# 최종 로그인 후 리스폰스
-LoginResponse:
+# 2FA 초기 설정 후 리스폰스
+2FASetupResponse:
+  type: object
+  required:
+    - qrCodeUrl
+    - manualEntryKey
+    - setupToken
+  properties:
+    qrCodeUrl:
+      type: string
+      description: TOTP QR 코드 URL
+      example: "otpauth://totp/FanArt:admin@example.com?secret=JBSWY3DPEHPK3PXP&issuer=FanArt"
+    manualEntryKey:
+      type: string
+      description: 수동 입력용 시크릿 키
+      example: "JBSW Y3DP EHPK 3PXP"
+    setupToken:
+      type: string
+      description: TOTP 설정 검증용 임시 토큰
+      example: "eyJhbGciOiJIUzI1NiIs..."
+
+# 최종 로그인(2FA 설정 끝) 후 리스폰스
+Verified2FAResponse:
+  type: object
+  required:
+    - accessToken
+  properties:
+    accessToken:
+      type: string
+      description: 일정 시간 유효한 JWT 액세스 토큰
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    backupCodes:
+      description: "백업 코드 목록 (초기 설정 시에만 제공)"
+      type: array
+      items:
+        type: string
+        example: "1234-5678"
+
+# 토큰 갱신 리스폰스
+RefereshTokenResponse:
   type: object
   required:
     - accessToken

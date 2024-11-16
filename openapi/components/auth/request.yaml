@@ -9,3 +9,7 @@ TwoFactorVerifyRequest:
       description: TOTP 6자리 코드
       pattern: "^[0-9]{6}$"
       example: "123456"
+    setupToken:
+      type: string
+      description: TOTP 설정 검증용 임시 토큰(첫 인증 때만)
+      example: "eyJhbGciOiJIUzI1NiIs..."
