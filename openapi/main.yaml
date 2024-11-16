@@ -32,6 +32,8 @@ paths:
     $ref: "./paths/auth/github/path.yaml"
   /auth/github/callback:
     $ref: "./paths/auth/github/callback/path.yaml"
+  /auth/2fa/setup:
+    $ref: "./paths/auth/2fa/setup/path.yaml"
   /auth/2fa/verify:
     $ref: "./paths/auth/2fa/verify/path.yaml"
   /auth/refresh:
