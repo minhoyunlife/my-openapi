@@ -1,3 +1,4 @@
+# 400
 BadRequestError:
   allOf:
     - $ref: "./base.yaml#/ErrorBase"
@@ -10,18 +11,28 @@ BadRequestError:
           playedOn:
             - 지원하지 않는 플랫폼입니다
 
+# 401
 UnauthorizedError:
   allOf:
     - $ref: "./base.yaml#/ErrorBase"
     - example:
         message: 인증에 실패하였습니다
 
+# 403
 ForbiddenError:
   allOf:
     - $ref: "./base.yaml#/ErrorBase"
     - example:
         message: 접근 권한이 없습니다
 
+# 409
+ConflictError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 로직 상 실행에 있어 모순이 발생했습니다
+
+# 413
 PayloadTooLargeError:
   allOf:
     - $ref: "./base.yaml#/ErrorBase"
@@ -30,3 +41,10 @@ PayloadTooLargeError:
         errors:
           imageFile:
             - 최대 100MB까지만 업로드 가능합니다
+
+# 429
+TooManyRequestsError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 너무 많은 요청이 들어왔습니다

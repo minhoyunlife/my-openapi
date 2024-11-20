@@ -36,6 +36,8 @@ paths:
     $ref: "./paths/auth/2fa/setup/path.yaml"
   /auth/2fa/verify:
     $ref: "./paths/auth/2fa/verify/path.yaml"
+  /auth/2fa/backup:
+    $ref: "./paths/auth/2fa/backup/path.yaml"
   /auth/refresh:
     $ref: "./paths/auth/refresh/path.yaml"
   /auth/logout:

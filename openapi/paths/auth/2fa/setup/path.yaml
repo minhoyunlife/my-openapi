@@ -24,3 +24,9 @@ get:
         application/json:
           schema:
             $ref: "../../../../components/errors/errors.yaml#/UnauthorizedError"
+    "409":
+      description: 이미 2FA 설정이 완료
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/errors/errors.yaml#/ConflictError"
