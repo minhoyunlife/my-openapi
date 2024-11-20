@@ -1,4 +1,4 @@
-# 2FA 인증용
+# 2FA 코드 인증용
 TwoFactorVerifyRequest:
   type: object
   required:
@@ -13,3 +13,15 @@ TwoFactorVerifyRequest:
       type: string
       description: TOTP 설정 검증용 임시 토큰(첫 인증 때만)
       example: "eyJhbGciOiJIUzI1NiIs..."
+
+# 백업 코드 인증용
+BackupCodeVerifyRequest:
+  type: object
+  required:
+    - code
+  properties:
+    code:
+      type: string
+      description: 8자리 백업 코드
+      pattern: "^[A-Z0-9]{8}$"
+      example: "ABCD1234"
