@@ -15,8 +15,13 @@ components:
     cookieAuth:
       type: apiKey
       in: cookie
-      name: refresh_token
-      description: 리프레시 토큰이 저장된 HTTP-only 쿠키
+      name: refreshToken
+      description: |
+        리프레시 토큰이 저장된 HTTP-only 쿠키
+        - httpOnly: true
+        - secure: production 환경에서만 true
+        - sameSite: none
+        - maxAge: 7일 (604,800초)
     tempAuth:
       type: http
       scheme: bearer

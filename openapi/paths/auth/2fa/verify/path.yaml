@@ -14,6 +14,12 @@ post:
   responses:
     "200":
       description: 2FA 인증 성공 및 최종 토큰 발급
+      headers:
+        Set-Cookie:
+          description: 리프레시 토큰 쿠키
+          schema:
+            type: string
+            example: "refreshToken=<token>; HttpOnly; Secure; SameSite=None; Max-Age=604800"
       content:
         application/json:
           schema:

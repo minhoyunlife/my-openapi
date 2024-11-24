@@ -6,7 +6,7 @@ post:
   tags:
     - Auth
   responses:
-    "200":
+    "201":
       description: TOTP 설정 정보
       content:
         application/json:
