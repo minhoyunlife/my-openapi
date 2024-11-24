@@ -310,6 +310,8 @@
         },
         "security" : [ {
           "bearerAuth" : [ ]
+        }, {
+          "cookieAuth" : [ ]
         } ],
         "tags" : [ "Auth" ]
       }
@@ -868,7 +870,7 @@
         "type" : "http"
       },
       "cookieAuth" : {
-        "description" : "리프레시 토큰이 저장된 HTTP-only 쿠키\n- httpOnly: true\n- secure: production 환경에서만 true\n- sameSite: none\n- maxAge: 7일 (604,800초)\n",
+        "description" : "리프레시 토큰이 저장된 HTTP-only 쿠키",
         "in" : "cookie",
         "name" : "refreshToken",
         "type" : "apiKey"
