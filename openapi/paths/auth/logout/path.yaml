@@ -3,6 +3,7 @@ post:
   operationId: logout
   security:
     - bearerAuth: []
+    - cookieAuth: []
   tags:
     - Auth
   responses:

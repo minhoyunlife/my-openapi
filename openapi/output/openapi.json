@@ -60,15 +60,15 @@
       }
     },
     "/auth/2fa/setup" : {
-      "get" : {
+      "post" : {
         "description" : "2FA 설정을 위한 QR코드와 수동 입력 키를 생성",
         "operationId" : "setup2FA",
         "responses" : {
-          "200" : {
+          "201" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_200_response"
+                  "$ref" : "#/components/schemas/setup2FA_201_response"
                 }
               }
             },
@@ -134,7 +134,18 @@
                 }
               }
             },
-            "description" : "2FA 인증 성공 및 최종 토큰 발급"
+            "description" : "2FA 인증 성공 및 최종 토큰 발급",
+            "headers" : {
+              "Set-Cookie" : {
+                "description" : "리프레시 토큰 쿠키",
+                "explode" : false,
+                "schema" : {
+                  "example" : "refreshToken=<token>; HttpOnly; Secure; SameSite=None; Max-Age=604800",
+                  "type" : "string"
+                },
+                "style" : "simple"
+              }
+            }
           },
           "400" : {
             "content" : {
@@ -196,7 +207,18 @@
                 }
               }
             },
-            "description" : "백업 코드 인증 성공"
+            "description" : "백업 코드 인증 성공",
+            "headers" : {
+              "Set-Cookie" : {
+                "description" : "리프레시 토큰 쿠키",
+                "explode" : false,
+                "schema" : {
+                  "example" : "refreshToken=<token>; HttpOnly; Secure; SameSite=None; Max-Age=604800",
+                  "type" : "string"
+                },
+                "style" : "simple"
+              }
+            }
           },
           "400" : {
             "content" : {
@@ -288,6 +310,8 @@
         },
         "security" : [ {
           "bearerAuth" : [ ]
+        }, {
+          "cookieAuth" : [ ]
         } ],
         "tags" : [ "Auth" ]
       }
@@ -604,9 +628,14 @@
             "description" : "일정 시간 유효한 JWT 액세스 토큰",
             "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
             "type" : "string"
+          },
+          "expiresIn" : {
+            "description" : "토큰 만료까지 남은 시간(초)",
+            "example" : 900,
+            "type" : "integer"
           }
         },
-        "required" : [ "accessToken" ]
+        "required" : [ "accessToken", "expiresIn" ]
       },
       "verify2FA_429_response" : {
         "allOf" : [ {
@@ -639,6 +668,26 @@
           }
         },
         "required" : [ "tempToken" ]
+      },
+      "setup2FA_201_response" : {
+        "properties" : {
+          "qrCodeUrl" : {
+            "description" : "TOTP QR 코드 URL",
+            "example" : "otpauth://totp/FanArt:admin@example.com?secret=JBSWY3DPEHPK3PXP&issuer=FanArt",
+            "type" : "string"
+          },
+          "manualEntryKey" : {
+            "description" : "수동 입력용 시크릿 키",
+            "example" : "JBSW Y3DP EHPK 3PXP",
+            "type" : "string"
+          },
+          "setupToken" : {
+            "description" : "TOTP 설정 검증용 임시 토큰",
+            "example" : "eyJhbGciOiJIUzI1NiIs...",
+            "type" : "string"
+          }
+        },
+        "required" : [ "manualEntryKey", "qrCodeUrl", "setupToken" ]
       },
       "verify2FA_request" : {
         "properties" : {
@@ -811,26 +860,6 @@
             }
           }
         } ]
-      },
-      "setup2FA_200_response" : {
-        "properties" : {
-          "qrCodeUrl" : {
-            "description" : "TOTP QR 코드 URL",
-            "example" : "otpauth://totp/FanArt:admin@example.com?secret=JBSWY3DPEHPK3PXP&issuer=FanArt",
-            "type" : "string"
-          },
-          "manualEntryKey" : {
-            "description" : "수동 입력용 시크릿 키",
-            "example" : "JBSW Y3DP EHPK 3PXP",
-            "type" : "string"
-          },
-          "setupToken" : {
-            "description" : "TOTP 설정 검증용 임시 토큰",
-            "example" : "eyJhbGciOiJIUzI1NiIs...",
-            "type" : "string"
-          }
-        },
-        "required" : [ "manualEntryKey", "qrCodeUrl", "setupToken" ]
       }
     },
     "securitySchemes" : {
@@ -843,7 +872,7 @@
       "cookieAuth" : {
         "description" : "리프레시 토큰이 저장된 HTTP-only 쿠키",
         "in" : "cookie",
-        "name" : "refresh_token",
+        "name" : "refreshToken",
         "type" : "apiKey"
       },
       "tempAuth" : {

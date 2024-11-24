@@ -15,7 +15,7 @@ components:
     cookieAuth:
       type: apiKey
       in: cookie
-      name: refresh_token
+      name: refreshToken
       description: 리프레시 토큰이 저장된 HTTP-only 쿠키
     tempAuth:
       type: http
