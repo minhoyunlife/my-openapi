@@ -74,16 +74,6 @@
             },
             "description" : "TOTP 설정 정보"
           },
-          "400" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
-                }
-              }
-            },
-            "description" : "잘못된 요청"
-          },
           "401" : {
             "content" : {
               "application/json" : {
@@ -151,7 +141,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                  "$ref" : "#/components/schemas/verify2FA_400_response"
                 }
               }
             },
@@ -224,7 +214,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                  "$ref" : "#/components/schemas/verify2FA_400_response"
                 }
               }
             },
@@ -248,7 +238,7 @@
                 }
               }
             },
-            "description" : "너무 많은 시도가 있었습니다"
+            "description" : "너무 많은 요청"
           }
         },
         "security" : [ {
@@ -366,7 +356,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                  "$ref" : "#/components/schemas/verify2FA_400_response"
                 }
               }
             },
@@ -418,7 +408,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                  "$ref" : "#/components/schemas/verify2FA_400_response"
                 }
               }
             },
@@ -521,6 +511,33 @@
             "message" : "파일 용량 제한을 초과했습니다",
             "errors" : {
               "imageFile" : [ "최대 100MB까지만 업로드 가능합니다" ]
+            }
+          }
+        } ]
+      },
+      "verify2FA_400_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "message" ]
+        }, {
+          "example" : {
+            "message" : "입력값이 유효하지 않습니다",
+            "errors" : {
+              "title" : [ "제목은 필수입니다", "제목은 100자를 초과할 수 없습니다" ],
+              "playedOn" : [ "지원하지 않는 플랫폼입니다" ]
             }
           }
         } ]
@@ -831,33 +848,6 @@
         }, {
           "example" : {
             "message" : "접근 권한이 없습니다"
-          }
-        } ]
-      },
-      "setup2FA_400_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "message" ]
-        }, {
-          "example" : {
-            "message" : "입력값이 유효하지 않습니다",
-            "errors" : {
-              "title" : [ "제목은 필수입니다", "제목은 100자를 초과할 수 없습니다" ],
-              "playedOn" : [ "지원하지 않는 플랫폼입니다" ]
-            }
           }
         } ]
       }
