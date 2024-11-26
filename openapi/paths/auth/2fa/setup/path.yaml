@@ -12,12 +12,6 @@ post:
         application/json:
           schema:
             $ref: "../../../../components/auth/response.yaml#/2FASetupResponse"
-    "400":
-      description: 잘못된 요청
-      content:
-        application/json:
-          schema:
-            $ref: "../../../../components/errors/errors.yaml#/BadRequestError"
     "401":
       description: 인증 실패
       content:

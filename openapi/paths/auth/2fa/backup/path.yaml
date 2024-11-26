@@ -37,7 +37,7 @@ post:
           schema:
             $ref: "../../../../components/errors/errors.yaml#/UnauthorizedError"
     "429":
-      description: 너무 많은 시도가 있었습니다
+      description: 너무 많은 요청
       content:
         application/json:
           schema:
