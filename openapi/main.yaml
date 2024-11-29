@@ -4,7 +4,7 @@ info:
   description: API specs for building MY projects.
   version: 0.0.1
 servers:
-  - url: http://api.example.com/v1 # 나중에 수정
+  - url: http://localhost:3000
 components:
   securitySchemes:
     bearerAuth:
