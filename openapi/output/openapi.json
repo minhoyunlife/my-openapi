@@ -3,7 +3,7 @@
   "info" : {
     "description" : "API specs for building MY projects.",
     "title" : "MY Projects REST API",
-    "version" : "0.0.1"
+    "version" : "1.0.0"
   },
   "servers" : [ {
     "url" : "http://localhost:3000"
