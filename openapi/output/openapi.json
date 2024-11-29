@@ -6,7 +6,7 @@
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "http://api.example.com/v1"
+    "url" : "http://localhost:3000"
   } ],
   "tags" : [ {
     "description" : "인증 관련 오퍼레이션",
