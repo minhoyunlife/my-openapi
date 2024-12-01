@@ -1,13 +1,3 @@
-# 임시 토큰 리스폰스
-TempTokenResponse:
-  type: object
-  required:
-    - tempToken
-  properties:
-    tempToken:
-      type: string
-      description: 2FA 인증 완료 전까지 사용할 임시 토큰
-
 # 2FA 초기 설정 후 리스폰스
 2FASetupResponse:
   type: object
