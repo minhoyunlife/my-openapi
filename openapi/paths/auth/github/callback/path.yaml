@@ -5,12 +5,14 @@ get:
   tags:
     - Auth
   responses:
-    "200":
-      description: GitHub 인증 성공 및 2FA 필요
-      content:
-        application/json:
+    "302":
+      description: GitHub 인증 성공 및 2FA 페이지로 리다이렉트
+      headers:
+        Location:
+          description: 2FA 페이지 URL (token 과 needToSetup2FA 포함)
           schema:
-            $ref: "../../../../components/auth/response.yaml#/TempTokenResponse"
+            type: string
+            example: "http://{frontend}/auth/2fa?token={tempToken}&needToSetup2FA={boolean}"
     "403":
       description: 권한 부재
       content:
