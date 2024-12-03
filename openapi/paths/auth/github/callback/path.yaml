@@ -10,14 +10,10 @@ get:
       headers:
         Location:
           description: |
-            2FA 페이지 URL (token 과 needToSetup2FA 포함)
-            - 초기 설정이 필요한 경우: /auth/2fa-setup?token={tempToken}
-            - 초기 설정이 필요하지 않은 경우: /auth/2fa?token={tempToken}
+            관련 2FA 페이지 URL로 리다이렉트
+            - 성공 & TOTP 초기 설정 필요: /2fa-setup?token={tempToken}
+            - 성공 & TOTP 이미 설정됨: /2fa?token={tempToken}
+            - 실패 (관리자 아님): /login?error=not_admin
+            - 실패 (유효하지 않은 프로필): /login?error=github_auth_failed
           schema:
             type: string
-    "403":
-      description: 권한 부재
-      content:
-        application/json:
-          schema:
-            $ref: "../../../../components/errors/errors.yaml#/ForbiddenError"
