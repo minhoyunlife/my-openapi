@@ -25,19 +25,27 @@ post:
           schema:
             $ref: "../../../../components/auth/response.yaml#/Verified2FAResponse"
     "400":
-      description: 잘못된 요청
+      description: |
+        - Authorization 헤더 누락
+        - 유효한 형식이 아닌 토큰
+        - 임시 토큰이 아닌 토큰
+        - 잘못된 형식의 2FA 코드
+        - 2FA 가 사전에 설정되어 있지 않음
       content:
         application/json:
           schema:
             $ref: "../../../../components/errors/errors.yaml#/BadRequestError"
     "401":
-      description: 인증 실패
+      description: |
+        - 임시 토큰의 유효기간 만료
+        - 무효한 토큰
+        - 2FA 코드가 일치하지 않음
       content:
         application/json:
           schema:
             $ref: "../../../../components/errors/errors.yaml#/UnauthorizedError"
     "429":
-      description: 너무 많은 요청
+      description: 최대 시도 횟수 초과
       content:
         application/json:
           schema:

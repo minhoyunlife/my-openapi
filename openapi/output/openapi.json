@@ -38,7 +38,7 @@
             "description" : "GitHub 인증 성공 및 2FA 페이지로 리다이렉트",
             "headers" : {
               "Location" : {
-                "description" : "2FA 페이지 URL (token 과 needToSetup2FA 포함)\n- 초기 설정이 필요한 경우: /auth/2fa-setup?token={tempToken}\n- 초기 설정이 필요하지 않은 경우: /auth/2fa?token={tempToken}\n",
+                "description" : "관련 2FA 페이지 URL로 리다이렉트\n- 성공 & TOTP 초기 설정 필요: /2fa-setup?token={tempToken}\n- 성공 & TOTP 이미 설정됨: /2fa?token={tempToken}\n- 실패 (관리자 아님): /login?error=not_admin\n- 실패 (유효하지 않은 프로필): /login?error=github_auth_failed\n",
                 "explode" : false,
                 "schema" : {
                   "type" : "string"
@@ -46,16 +46,6 @@
                 "style" : "simple"
               }
             }
-          },
-          "403" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/handleGithubOAuthCallback_403_response"
-                }
-              }
-            },
-            "description" : "권한 부재"
           }
         },
         "security" : [ ],
@@ -77,6 +67,16 @@
             },
             "description" : "TOTP 설정 정보"
           },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "- Authorization 헤더 누락\n- 유효한 형식이 아닌 토큰\n- 임시 토큰이 아닌 토큰\n"
+          },
           "401" : {
             "content" : {
               "application/json" : {
@@ -85,17 +85,7 @@
                 }
               }
             },
-            "description" : "인증 실패"
-          },
-          "409" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_409_response"
-                }
-              }
-            },
-            "description" : "이미 2FA 설정이 완료"
+            "description" : "- 임시 토큰의 유효기간 만료\n- 무효한 토큰\n"
           }
         },
         "security" : [ {
@@ -144,11 +134,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_400_response"
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
                 }
               }
             },
-            "description" : "잘못된 요청"
+            "description" : "- Authorization 헤더 누락\n- 유효한 형식이 아닌 토큰\n- 임시 토큰이 아닌 토큰\n- 잘못된 형식의 2FA 코드\n- 2FA 가 사전에 설정되어 있지 않음\n"
           },
           "401" : {
             "content" : {
@@ -158,7 +148,7 @@
                 }
               }
             },
-            "description" : "인증 실패"
+            "description" : "- 임시 토큰의 유효기간 만료\n- 무효한 토큰\n- 2FA 코드가 일치하지 않음\n"
           },
           "429" : {
             "content" : {
@@ -168,7 +158,7 @@
                 }
               }
             },
-            "description" : "너무 많은 요청"
+            "description" : "최대 시도 횟수 초과"
           }
         },
         "security" : [ {
@@ -217,11 +207,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_400_response"
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
                 }
               }
             },
-            "description" : "잘못된 요청"
+            "description" : "- Authorization 헤더 누락\n- 유효한 형식이 아닌 백업 코드\n- 임시 토큰이 아닌 토큰\n- TOTP 가 사전에 설정되어 있지 않음\n"
           },
           "401" : {
             "content" : {
@@ -231,7 +221,7 @@
                 }
               }
             },
-            "description" : "인증 실패"
+            "description" : "- 임시 토큰의 유효기간 만료\n- 무효한 토큰\n- 백업 코드가 일치하지 않음\n"
           },
           "429" : {
             "content" : {
@@ -241,7 +231,7 @@
                 }
               }
             },
-            "description" : "너무 많은 요청"
+            "description" : "최대 시도 횟수 초과"
           }
         },
         "security" : [ {
@@ -265,6 +255,16 @@
             },
             "description" : "토큰 갱신 성공"
           },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "리프레시 토큰 쿠키 누락"
+          },
           "401" : {
             "content" : {
               "application/json" : {
@@ -273,7 +273,7 @@
                 }
               }
             },
-            "description" : "인증 실패"
+            "description" : "- 리프레시 토큰 만료\n- 유효하지 않은 토큰\n- 리프레시 토큰이 아닌 토큰\n- 토큰의 이메일이 등록된 관리자가 아님\n"
           }
         },
         "security" : [ {
@@ -290,6 +290,16 @@
           "200" : {
             "description" : "로그아웃 성공"
           },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "- Authorization 헤더 누락\n- 유효한 형식이 아닌 토큰\n- 액세스 토큰이 아닌 토큰\n- 리프레시 토큰 쿠키 누락\n"
+          },
           "401" : {
             "content" : {
               "application/json" : {
@@ -298,7 +308,7 @@
                 }
               }
             },
-            "description" : "인증 실패"
+            "description" : "- 액세스 토큰 만료\n- 무효한 토큰\n"
           }
         },
         "security" : [ {
@@ -359,7 +369,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_400_response"
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
                 }
               }
             },
@@ -411,7 +421,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/verify2FA_400_response"
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
                 }
               }
             },
@@ -495,6 +505,10 @@
       "uploadArtworkImage_413_response" : {
         "allOf" : [ {
           "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
             "message" : {
               "description" : "에러 메시지",
               "type" : "string"
@@ -508,39 +522,12 @@
               "description" : "상세 에러 정보"
             }
           },
-          "required" : [ "message" ]
+          "required" : [ "code", "message" ]
         }, {
           "example" : {
             "message" : "파일 용량 제한을 초과했습니다",
             "errors" : {
               "imageFile" : [ "최대 100MB까지만 업로드 가능합니다" ]
-            }
-          }
-        } ]
-      },
-      "verify2FA_400_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "message" ]
-        }, {
-          "example" : {
-            "message" : "입력값이 유효하지 않습니다",
-            "errors" : {
-              "title" : [ "제목은 필수입니다", "제목은 100자를 초과할 수 없습니다" ],
-              "playedOn" : [ "지원하지 않는 플랫폼입니다" ]
             }
           }
         } ]
@@ -608,29 +595,6 @@
         },
         "required" : [ "imageKey" ]
       },
-      "setup2FA_409_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "message" ]
-        }, {
-          "example" : {
-            "message" : "로직 상 실행에 있어 모순이 발생했습니다"
-          }
-        } ]
-      },
       "verifyBackupCode_request" : {
         "properties" : {
           "code" : {
@@ -660,6 +624,10 @@
       "verify2FA_429_response" : {
         "allOf" : [ {
           "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
             "message" : {
               "description" : "에러 메시지",
               "type" : "string"
@@ -673,7 +641,7 @@
               "description" : "상세 에러 정보"
             }
           },
-          "required" : [ "message" ]
+          "required" : [ "code", "message" ]
         }, {
           "example" : {
             "message" : "너무 많은 요청이 들어왔습니다"
@@ -802,6 +770,10 @@
       "setup2FA_401_response" : {
         "allOf" : [ {
           "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
             "message" : {
               "description" : "에러 메시지",
               "type" : "string"
@@ -815,16 +787,20 @@
               "description" : "상세 에러 정보"
             }
           },
-          "required" : [ "message" ]
+          "required" : [ "code", "message" ]
         }, {
           "example" : {
             "message" : "인증에 실패하였습니다"
           }
         } ]
       },
-      "handleGithubOAuthCallback_403_response" : {
+      "setup2FA_400_response" : {
         "allOf" : [ {
           "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
             "message" : {
               "description" : "에러 메시지",
               "type" : "string"
@@ -838,10 +814,14 @@
               "description" : "상세 에러 정보"
             }
           },
-          "required" : [ "message" ]
+          "required" : [ "code", "message" ]
         }, {
           "example" : {
-            "message" : "접근 권한이 없습니다"
+            "message" : "입력값이 유효하지 않습니다",
+            "errors" : {
+              "title" : [ "제목은 필수입니다", "제목은 100자를 초과할 수 없습니다" ],
+              "playedOn" : [ "지원하지 않는 플랫폼입니다" ]
+            }
           }
         } ]
       }

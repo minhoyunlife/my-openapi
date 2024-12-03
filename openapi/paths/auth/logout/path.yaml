@@ -9,8 +9,20 @@ post:
   responses:
     "200":
       description: 로그아웃 성공
+    "400":
+      description: |
+        - Authorization 헤더 누락
+        - 유효한 형식이 아닌 토큰
+        - 액세스 토큰이 아닌 토큰
+        - 리프레시 토큰 쿠키 누락
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/BadRequestError"
     "401":
-      description: 인증 실패
+      description: |
+        - 액세스 토큰 만료
+        - 무효한 토큰
       content:
         application/json:
           schema:

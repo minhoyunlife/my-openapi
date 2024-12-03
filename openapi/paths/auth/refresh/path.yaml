@@ -12,8 +12,18 @@ post:
         application/json:
           schema:
             $ref: "../../../components/auth/response.yaml#/RefereshTokenResponse"
+    "400":
+      description: 리프레시 토큰 쿠키 누락
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/BadRequestError"
     "401":
-      description: 인증 실패
+      description: |
+        - 리프레시 토큰 만료
+        - 유효하지 않은 토큰
+        - 리프레시 토큰이 아닌 토큰
+        - 토큰의 이메일이 등록된 관리자가 아님
       content:
         application/json:
           schema:

@@ -12,15 +12,20 @@ post:
         application/json:
           schema:
             $ref: "../../../../components/auth/response.yaml#/2FASetupResponse"
+    "400":
+      description: |
+        - Authorization 헤더 누락
+        - 유효한 형식이 아닌 토큰
+        - 임시 토큰이 아닌 토큰
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/errors/errors.yaml#/BadRequestError"
     "401":
-      description: 인증 실패
+      description: |
+        - 임시 토큰의 유효기간 만료
+        - 무효한 토큰
       content:
         application/json:
           schema:
             $ref: "../../../../components/errors/errors.yaml#/UnauthorizedError"
-    "409":
-      description: 이미 2FA 설정이 완료
-      content:
-        application/json:
-          schema:
-            $ref: "../../../../components/errors/errors.yaml#/ConflictError"
