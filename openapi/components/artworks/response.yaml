@@ -48,6 +48,41 @@ Artwork:
     shortReview: "광활한 세계와 자유도가 인상적인 걸작"
     isDraft: false
 
+# 페이지네이션 리스폰스용 스키마
+ArtworkListResponse:
+  type: object
+  required:
+    - items
+    - metadata
+  properties:
+    items:
+      type: array
+      items:
+        $ref: "#/Artwork"
+    metadata:
+      type: object
+      required:
+        - totalCount
+        - totalPages
+        - currentPage
+        - pageSize
+      properties:
+        totalCount:
+          type: integer
+          description: 검색 조건에 해당하는 전체 작품 수
+        totalPages:
+          type: integer
+          description: 전체 페이지 수 (totalCount와 pageSize 기반으로 계산)
+        currentPage:
+          type: integer
+          description: 현재 조회 중인 페이지 번호
+        pageSize:
+          type: integer
+          description: |
+            페이지당 항목 수 (고정값)
+            * CMS 접근: 10개
+            * 일반 접근: 20개
+
 # 업로드 이미지 리스폰스용 스키마
 UploadArtworkImageResponse:
   type: object

@@ -1,18 +1,86 @@
 get:
-  description: 작품 목록 취득
+  description: 작품 목록 조회
   operationId: getArtworks
-  security: []
+  security:
+    - bearerAuth: [] # CMS 프론트엔드에서의 액세스용(인증 필요)
+    - {} # 팬아트 프론트엔드에서의 액세스용(인증 불필요)
   tags:
     - Artworks
+  parameters:
+    - name: page
+      in: query
+      description: (공통) 페이지 번호 (1부터 시작)
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    - name: sort
+      in: query
+      description: |
+        (공통) 정렬 기준
+        * created_desc: 최신순
+        * created_asc: 과거순
+        * rating_desc: 평점 높은순
+        * rating_asc: 평점 낮은순
+      schema:
+        type: string
+        enum: [created_desc, created_asc, rating_desc, rating_asc]
+        default: created_desc
+    - name: platforms
+      in: query
+      description: (공통) 플랫폼 필터 (복수 선택 가능)
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          type: string
+          enum: [Steam, Switch, GOG, Epic Games, Android]
+    - name: genres
+      in: query
+      description: (공통) 장르 필터 (복수 선택 가능)
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          type: string
+    - name: search
+      in: query
+      description: |
+        (공통) 제목 검색어
+        * 앞뒤 공백은 자동으로 제거됨
+        * 연속된 공백은 단일 공백으로 처리됨
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 50
+    - name: status
+      in: query
+      description: (CMS) 작품 상태 필터 (인증된 요청에서만 사용 가능)
+      schema:
+        type: array
+        items:
+          type: string
+          enum: [draft, published]
+        default: [published]
   responses:
     "200":
-      description: 작품 목록이 반환됨
+      description: 작품 목록 조회 성공
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: "../../components/artworks/response.yaml#/Artwork"
+            $ref: "../../components/artworks/response.yaml#/ArtworkListResponse"
+    "400":
+      description: 잘못된 요청
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/errors/errors.yaml#/BadRequestError"
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/errors/errors.yaml#/UnauthorizedError"
 
 post:
   description: 새로운 작품 등록
