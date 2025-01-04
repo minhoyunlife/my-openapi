@@ -54,3 +54,5 @@ paths:
   # 장르
   /genres:
     $ref: "./paths/genres/path.yaml"
+  /genres/names:
+    $ref: "./paths/genres/names/path.yaml"
