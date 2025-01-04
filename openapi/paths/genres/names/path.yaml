@@ -1,0 +1,39 @@
+get:
+  description: 장르 검색
+  operationId: getGenresByName
+  security:
+    - bearerAuth: [] # CMS 프론트엔드에서의 액세스용(인증 필요)
+  tags:
+    - Genres
+  parameters:
+    - name: search
+      in: query
+      description: |
+        장르명 검색어
+        * 앞뒤 공백은 자동으로 제거됨
+        * 연속된 공백은 단일 공백으로 처리됨
+        * 다언어 지원 가능으로, 한국어, 영어, 일본어 등으로 검색 가능
+        * 검색 결과는 한국어로만 반환되도록 함
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 30
+  responses:
+    "200":
+      description: 장르 검색 성공
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/genres/response.yaml#/GenreSearchResponse"
+    "400":
+      description: 잘못된 요청
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/BadRequestError"
+    "401":
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/errors/errors.yaml#/UnauthorizedError"

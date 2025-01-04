@@ -1,15 +1,87 @@
-# 리스폰스용 스키마
+# 장르 정보 (한국어만)
+SimpleGenre:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: string
+      description: 장르 식별자
+    name:
+      type: string
+      description: 한국어 장르명
+
+# 장르의 번역 정보
+GenreTranslation:
+  type: object
+  required:
+    - language
+    - name
+  properties:
+    language:
+      type: string
+      description: ISO 639-1 언어 코드
+      enum: [ko, en, ja]
+    name:
+      type: string
+      description: 해당 언어의 장르명
+
+# 장르 정보 (모든 번역 포함)
 Genre:
-  allOf:
-    - $ref: "./base.yaml#/GenreBase"
-    - type: object
-      properties:
-        id:
-          type: string
-          description: 장르 식별자
+  type: object
+  required:
+    - id
+    - translations
+  properties:
+    id:
+      type: string
+      description: 장르 식별자
+    translations:
+      type: array
+      description: 지원하는 모든 언어의 번역 정보
+      items:
+        $ref: "#/GenreTranslation"
+
+# 페이지네이션 리스폰스용 스키마
+GenreListResponse:
+  type: object
+  required:
+    - items
+    - metadata
+  properties:
+    items:
+      type: array
+      items:
+        $ref: "#/Genre"
+    metadata:
+      type: object
       required:
-        - id
-        - name
-  example:
-    id: "<nanoid format>"
-    name: "Action"
+        - totalCount
+        - totalPages
+        - currentPage
+        - pageSize
+      properties:
+        totalCount:
+          type: integer
+          description: 검색 조건에 해당하는 전체 장르 수
+        totalPages:
+          type: integer
+          description: 전체 페이지 수 (totalCount와 pageSize 기반으로 계산)
+        currentPage:
+          type: integer
+          description: 현재 조회 중인 페이지 번호
+        pageSize:
+          type: integer
+          description: 페이지당 항목 수 (고정값)
+
+# 장르 검색 리스폰스용 스키마
+GenreSearchResponse:
+  type: object
+  required:
+    - items
+  properties:
+    items:
+      type: array
+      items:
+        $ref: "#/SimpleGenre"

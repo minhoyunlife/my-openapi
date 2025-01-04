@@ -1,7 +1,0 @@
-# 리퀘스트, 리스폰스에 공통적으로 사용될 속성들
-GenreBase:
-  type: object
-  properties:
-    name:
-      type: string
-      description: 장르명

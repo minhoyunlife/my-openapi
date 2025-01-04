@@ -26,6 +26,8 @@ tags:
     description: 인증 관련 오퍼레이션
   - name: Artworks
     description: 팬아트 작품 관리와 관련된 오퍼레이션
+  - name: Genres
+    description: 장르 관리와 관련된 오퍼레이션
 paths:
   # 인증
   /auth/github:
@@ -48,3 +50,11 @@ paths:
     $ref: "./paths/artworks/path.yaml"
   /artworks/images:
     $ref: "./paths/artworks/images/path.yaml"
+
+  # 장르
+  /genres:
+    $ref: "./paths/genres/path.yaml"
+  /genres/names:
+    $ref: "./paths/genres/names/path.yaml"
+  /genres/{id}:
+    $ref: "./paths/genres/id/path.yaml"
