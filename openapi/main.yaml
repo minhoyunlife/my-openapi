@@ -56,3 +56,5 @@ paths:
     $ref: "./paths/genres/path.yaml"
   /genres/names:
     $ref: "./paths/genres/names/path.yaml"
+  /genres/{id}:
+    $ref: "./paths/genres/id/path.yaml"
