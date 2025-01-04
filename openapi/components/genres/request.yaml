@@ -1,0 +1,17 @@
+# 생성 리퀘스트용 스키마
+CreateGenreRequest:
+  required:
+    - koName
+    - enName
+    - jaName
+  type: object
+  properties:
+    koName:
+      type: string
+      description: 장르의 한국어명
+    enName:
+      type: string
+      description: 장르의 영어명
+    jaName:
+      type: string
+      description: 장르의 일본어명

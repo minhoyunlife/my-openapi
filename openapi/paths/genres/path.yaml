@@ -57,14 +57,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: "../../components/artworks/request.yaml#/CreateArtworkRequest"
+          $ref: "../../components/genres/request.yaml#/CreateGenreRequest"
   responses:
     "201":
-      description: 작품이 성공적으로 등록됨
+      description: 장르가 성공적으로 등록됨
       content:
         application/json:
           schema:
-            $ref: "../../components/artworks/response.yaml#/Artwork"
+            $ref: "../../components/genres/response.yaml#/Genre"
     "400":
       description: 잘못된 요청
       content:
@@ -77,3 +77,9 @@ post:
         application/json:
           schema:
             $ref: "../../components/errors/errors.yaml#/UnauthorizedError"
+    "409":
+      description: 동일 이름의 중복 등록 시도
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/errors/errors.yaml#/ConflictError"
