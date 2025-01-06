@@ -37,11 +37,22 @@ Artwork:
     title: "젤다의 전설: 야생의 숨결"
     imageUrl: "https://example.com/images/botw.jpg"
     createdAt: "2023-05-20T14:45:00Z"
-    genres:
+    genreIds:
       [
-        { id: "<nanoid format>", name: "액션" },
-        { id: "<nanoid format>", name: "어드벤처" },
-        { id: "<nanoid format>", name: "오픈월드" },
+        {
+          id: "<nanoid format>",
+          translation: { ko: "액션", en: "Action", ja: "アクション" },
+        },
+        {
+          id: "<nanoid format>",
+          translation:
+            { ko: "어드벤처", en: "Adventure", ja: "アドベンチャー" },
+        },
+        {
+          id: "<nanoid format>",
+          translation:
+            { ko: "오픈 월드", en: "Open World", ja: "オープンワールド" },
+        },
       ]
     playedOn: "Switch"
     rating: 20
