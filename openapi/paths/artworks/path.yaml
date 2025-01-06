@@ -35,9 +35,9 @@ get:
         items:
           type: string
           enum: [Steam, Switch, GOG, Epic Games, Android]
-    - name: genres
+    - name: genreIds
       in: query
-      description: (공통) 장르 필터 (복수 선택 가능)
+      description: (공통) 장르ID 필터 (복수 선택 가능)
       schema:
         type: array
         uniqueItems: true
