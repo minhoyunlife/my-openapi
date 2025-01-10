@@ -759,7 +759,7 @@
           "explode" : true,
           "in" : "query",
           "name" : "search",
-          "required" : false,
+          "required" : true,
           "schema" : {
             "maxLength" : 30,
             "minLength" : 1,

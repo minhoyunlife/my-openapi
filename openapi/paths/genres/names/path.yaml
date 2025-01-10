@@ -8,6 +8,7 @@ get:
   parameters:
     - name: search
       in: query
+      required: true
       description: |
         장르명 검색어
         * 앞뒤 공백은 자동으로 제거됨
