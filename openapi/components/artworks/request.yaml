@@ -1,28 +1,50 @@
 # 생성 리퀘스트용 스키마
 CreateArtworkRequest:
   required:
-    - title
     - imageKey
-  allOf:
-    - $ref: "./base.yaml#/ArtworkBase"
-    - type: object
-      properties:
-        imageKey:
-          type: string
-          description: S3에 저장된 이미지의 키 값
-        genreIds:
-          type: array
-          items:
-            type: string
-          description: 게임의 장르ID 목록
-      example:
-        title: "젤다의 전설: 야생의 숨결"
-        imageKey: "artworks/2024/03/abc123def456"
-        createdAt: "2023-05-20T14:45:00Z"
-        genreIds: ["genre-1", "genre-2"]
-        playedOn: "Switch"
-        rating: 20
-        shortReview: "광활한 세계와 자유도가 인상적인 걸작"
+    - koTitle
+    - enTitle
+    - jaTitle
+  properties:
+    imageKey:
+      type: string
+      description: S3에 저장된 이미지의 키 값
+    koTitle:
+      type: string
+      description: 게임 제목(한국어)
+    enTitle:
+      type: string
+      description: 게임 제목(영어)
+    jaTitle:
+      type: string
+      description: 게임 제목(일본어)
+    createdAt:
+      type: string
+      format: date-time
+      description: 팬아트 작품을 완성한 날짜
+    playedOn:
+      type: string
+      enum: [Steam, Switch, GOG, Epic Games, Android]
+      description: 플레이한 플랫폼
+    rating:
+      type: integer
+      minimum: 0
+      maximum: 20
+      description: 개인적으로 매긴 게임 평점 (0-20 정수)
+    koShortReview:
+      type: string
+      description: 플레이 후 한줄평(한국어)
+    enShortReview:
+      type: string
+      description: 플레이 후 한줄평(영어)
+    jaShortReview:
+      type: string
+      description: 플레이 후 한줄평(일본어)
+    genreIds:
+      type: array
+      description: 게임의 장르ID 목록
+      items:
+        type: string
 
 # 업로드 이미지 리퀘스트용 스키마
 UploadArtworkImageRequest:
