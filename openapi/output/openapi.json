@@ -378,7 +378,7 @@
           },
           "style" : "form"
         }, {
-          "description" : "(공통) 제목 검색어\n* 앞뒤 공백은 자동으로 제거됨\n* 연속된 공백은 단일 공백으로 처리됨\n",
+          "description" : "(공통) 제목 검색어\n* 앞뒤 공백은 자동으로 제거됨\n* 연속된 공백은 단일 공백으로 처리됨\n* 한국어, 영어, 일본어 등으로 검색 가능\n",
           "explode" : true,
           "in" : "query",
           "name" : "search",
@@ -707,7 +707,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_allOf_genres_inner"
+                  "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_genres_inner"
                 }
               }
             },
@@ -835,7 +835,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_allOf_genres_inner"
+                  "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_genres_inner"
                 }
               }
             },
@@ -895,7 +895,7 @@
         "properties" : {
           "items" : {
             "items" : {
-              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_allOf_genres_inner"
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_genres_inner"
             },
             "type" : "array"
           }
@@ -925,48 +925,11 @@
         },
         "required" : [ "accessToken" ]
       },
-      "getArtworks_200_response_items_inner_allOf_genres_inner_translations_inner" : {
-        "properties" : {
-          "language" : {
-            "description" : "ISO 639-1 언어 코드",
-            "enum" : [ "ko", "en", "ja" ],
-            "type" : "string"
-          },
-          "name" : {
-            "description" : "해당 언어의 장르명",
-            "type" : "string"
-          }
-        },
-        "required" : [ "language", "name" ]
-      },
-      "createGenre_request" : {
-        "properties" : {
-          "koName" : {
-            "description" : "장르의 한국어명",
-            "maxLength" : 30,
-            "minLength" : 1,
-            "type" : "string"
-          },
-          "enName" : {
-            "description" : "장르의 영어명",
-            "maxLength" : 30,
-            "minLength" : 1,
-            "type" : "string"
-          },
-          "jaName" : {
-            "description" : "장르의 일본어명",
-            "maxLength" : 30,
-            "minLength" : 1,
-            "type" : "string"
-          }
-        },
-        "required" : [ "enName", "jaName", "koName" ]
-      },
       "getGenres_200_response" : {
         "properties" : {
           "items" : {
             "items" : {
-              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_allOf_genres_inner"
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_genres_inner"
             },
             "type" : "array"
           },
@@ -977,110 +940,52 @@
         "required" : [ "items", "metadata" ]
       },
       "getArtworks_200_response_items_inner" : {
-        "allOf" : [ {
-          "properties" : {
-            "title" : {
-              "description" : "게임 제목",
-              "type" : "string"
-            },
-            "createdAt" : {
-              "description" : "팬아트 작품을 완성한 날짜",
-              "format" : "date-time",
-              "type" : "string"
-            },
-            "playedOn" : {
-              "description" : "플레이한 플랫폼",
-              "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
-              "type" : "string"
-            },
-            "rating" : {
-              "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
-              "maximum" : 20,
-              "minimum" : 0,
-              "type" : "integer"
-            },
-            "shortReview" : {
-              "description" : "플레이 후 한줄평",
-              "type" : "string"
-            }
-          }
-        }, {
-          "properties" : {
-            "id" : {
-              "description" : "작품 식별자",
-              "type" : "string"
-            },
-            "imageUrl" : {
-              "description" : "팬아트 작품 이미지 URL\n권한에 따라 다른 형태의 URL이 제공됨\n- 일반 사용자: 1시간 유효한 서명된 URL\n- 작품 등록자: 직접 접근 가능한 URL\n",
-              "format" : "uri",
-              "type" : "string"
-            },
-            "genres" : {
-              "items" : {
-                "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_allOf_genres_inner"
-              },
-              "type" : "array"
-            },
-            "isDraft" : {
-              "description" : "작품의 임시저장 상태 여부",
-              "type" : "boolean"
-            }
-          },
-          "required" : [ "genres", "id", "imageUrl", "isDraft" ]
-        } ],
-        "example" : {
-          "id" : "<nanoid format>",
-          "title" : "젤다의 전설: 야생의 숨결",
-          "imageUrl" : "https://example.com/images/botw.jpg",
-          "createdAt" : "2023-05-20T14:45:00Z",
-          "genreIds" : [ {
-            "id" : "<nanoid format>",
-            "translation" : {
-              "ko" : "액션",
-              "en" : "Action",
-              "ja" : "アクション"
-            }
-          }, {
-            "id" : "<nanoid format>",
-            "translation" : {
-              "ko" : "어드벤처",
-              "en" : "Adventure",
-              "ja" : "アドベンチャー"
-            }
-          }, {
-            "id" : "<nanoid format>",
-            "translation" : {
-              "ko" : "오픈 월드",
-              "en" : "Open World",
-              "ja" : "オープンワールド"
-            }
-          } ],
-          "playedOn" : "Switch",
-          "rating" : 20,
-          "shortReview" : "광활한 세계와 자유도가 인상적인 걸작",
-          "isDraft" : false
-        }
-      },
-      "getArtworks_200_response_metadata" : {
         "properties" : {
-          "totalCount" : {
-            "description" : "검색 조건에 해당하는 전체 작품 수",
+          "id" : {
+            "description" : "장르 식별자",
+            "type" : "string"
+          },
+          "imageUrl" : {
+            "description" : "팬아트 작품 이미지 URL\n권한에 따라 다른 형태의 URL이 제공됨\n- 일반 사용자: 1시간 유효한 서명된 URL\n- 작품 등록자: 직접 접근 가능한 URL\n",
+            "format" : "uri",
+            "type" : "string"
+          },
+          "createdAt" : {
+            "description" : "팬아트 작품을 완성한 날짜",
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "playedOn" : {
+            "description" : "플레이한 플랫폼",
+            "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
+            "type" : "string"
+          },
+          "rating" : {
+            "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
+            "maximum" : 20,
+            "minimum" : 0,
             "type" : "integer"
           },
-          "totalPages" : {
-            "description" : "전체 페이지 수 (totalCount와 pageSize 기반으로 계산)",
-            "type" : "integer"
+          "isDraft" : {
+            "description" : "작품의 임시저장 상태 여부",
+            "type" : "boolean"
           },
-          "currentPage" : {
-            "description" : "현재 조회 중인 페이지 번호",
-            "type" : "integer"
+          "translations" : {
+            "description" : "지원하는 모든 언어의 번역 정보",
+            "items" : {
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_translations_inner"
+            },
+            "type" : "array"
           },
-          "pageSize" : {
-            "description" : "페이지당 항목 수 (고정값)\n* CMS 접근: 10개\n* 일반 접근: 20개\n",
-            "type" : "integer"
+          "genres" : {
+            "description" : "작품에 해당하는 장르 목록",
+            "items" : {
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_genres_inner"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "currentPage", "pageSize", "totalCount", "totalPages" ]
+        "required" : [ "createdAt", "genres", "id", "imageUrl", "isDraft", "playedOn", "rating", "translations" ]
       },
       "getArtworks_200_response" : {
         "properties" : {
@@ -1126,69 +1031,6 @@
           }
         } ]
       },
-      "createArtwork_request" : {
-        "allOf" : [ {
-          "properties" : {
-            "title" : {
-              "description" : "게임 제목",
-              "type" : "string"
-            },
-            "createdAt" : {
-              "description" : "팬아트 작품을 완성한 날짜",
-              "format" : "date-time",
-              "type" : "string"
-            },
-            "playedOn" : {
-              "description" : "플레이한 플랫폼",
-              "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
-              "type" : "string"
-            },
-            "rating" : {
-              "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
-              "maximum" : 20,
-              "minimum" : 0,
-              "type" : "integer"
-            },
-            "shortReview" : {
-              "description" : "플레이 후 한줄평",
-              "type" : "string"
-            }
-          }
-        }, {
-          "example" : {
-            "title" : "젤다의 전설: 야생의 숨결",
-            "imageKey" : "artworks/2024/03/abc123def456",
-            "createdAt" : "2023-05-20T14:45:00Z",
-            "genreIds" : [ "genre-1", "genre-2" ],
-            "playedOn" : "Switch",
-            "rating" : 20,
-            "shortReview" : "광활한 세계와 자유도가 인상적인 걸작"
-          },
-          "properties" : {
-            "imageKey" : {
-              "description" : "S3에 저장된 이미지의 키 값",
-              "type" : "string"
-            },
-            "genreIds" : {
-              "description" : "게임의 장르ID 목록",
-              "items" : {
-                "type" : "string"
-              },
-              "type" : "array"
-            }
-          }
-        } ],
-        "required" : [ "imageKey", "title" ]
-      },
-      "uploadArtworkImage_201_response" : {
-        "properties" : {
-          "imageKey" : {
-            "description" : "S3에 저장된 이미지의 키 값",
-            "type" : "string"
-          }
-        },
-        "required" : [ "imageKey" ]
-      },
       "updateGenre_request" : {
         "anyOf" : [ ],
         "nullable" : true,
@@ -1212,6 +1054,221 @@
             "type" : "string"
           }
         }
+      },
+      "getArtworks_200_response_items_inner_genres_inner" : {
+        "properties" : {
+          "id" : {
+            "description" : "장르 식별자",
+            "type" : "string"
+          },
+          "translations" : {
+            "description" : "지원하는 모든 언어의 번역 정보",
+            "items" : {
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_genres_inner_translations_inner"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "id", "translations" ]
+      },
+      "refreshToken_200_response" : {
+        "properties" : {
+          "accessToken" : {
+            "description" : "일정 시간 유효한 JWT 액세스 토큰",
+            "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "type" : "string"
+          },
+          "expiresIn" : {
+            "description" : "토큰 만료까지 남은 시간(초)",
+            "example" : 900,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "accessToken", "expiresIn" ]
+      },
+      "verify2FA_request" : {
+        "properties" : {
+          "code" : {
+            "description" : "TOTP 6자리 코드",
+            "example" : "123456",
+            "pattern" : "^[0-9]{6}$",
+            "type" : "string"
+          },
+          "setupToken" : {
+            "description" : "TOTP 설정 검증용 임시 토큰(첫 인증 때만)",
+            "example" : "eyJhbGciOiJIUzI1NiIs...",
+            "type" : "string"
+          }
+        },
+        "required" : [ "code" ]
+      },
+      "setup2FA_401_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "code", "message" ]
+        }, {
+          "example" : {
+            "message" : "인증에 실패하였습니다"
+          }
+        } ]
+      },
+      "getArtworks_200_response_items_inner_translations_inner" : {
+        "properties" : {
+          "language" : {
+            "description" : "ISO 639-1 언어 코드",
+            "enum" : [ "ko", "en", "ja" ],
+            "type" : "string"
+          },
+          "title" : {
+            "description" : "해당 언어의 작품명",
+            "type" : "string"
+          },
+          "shortReview" : {
+            "description" : "해당 언어의 간단한 리뷰",
+            "type" : "string"
+          }
+        },
+        "required" : [ "language", "title" ]
+      },
+      "createGenre_request" : {
+        "properties" : {
+          "koName" : {
+            "description" : "장르의 한국어명",
+            "maxLength" : 30,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "enName" : {
+            "description" : "장르의 영어명",
+            "maxLength" : 30,
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "jaName" : {
+            "description" : "장르의 일본어명",
+            "maxLength" : 30,
+            "minLength" : 1,
+            "type" : "string"
+          }
+        },
+        "required" : [ "enName", "jaName", "koName" ]
+      },
+      "getArtworks_200_response_metadata" : {
+        "properties" : {
+          "totalCount" : {
+            "description" : "검색 조건에 해당하는 전체 작품 수",
+            "type" : "integer"
+          },
+          "totalPages" : {
+            "description" : "전체 페이지 수 (totalCount와 pageSize 기반으로 계산)",
+            "type" : "integer"
+          },
+          "currentPage" : {
+            "description" : "현재 조회 중인 페이지 번호",
+            "type" : "integer"
+          },
+          "pageSize" : {
+            "description" : "페이지당 항목 수 (고정값)\n* CMS 접근: 10개\n* 일반 접근: 20개\n",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "currentPage", "pageSize", "totalCount", "totalPages" ]
+      },
+      "createArtwork_request" : {
+        "properties" : {
+          "imageKey" : {
+            "description" : "S3에 저장된 이미지의 키 값",
+            "type" : "string"
+          },
+          "koTitle" : {
+            "description" : "게임 제목(한국어)",
+            "type" : "string"
+          },
+          "enTitle" : {
+            "description" : "게임 제목(영어)",
+            "type" : "string"
+          },
+          "jaTitle" : {
+            "description" : "게임 제목(일본어)",
+            "type" : "string"
+          },
+          "createdAt" : {
+            "description" : "팬아트 작품을 완성한 날짜",
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "playedOn" : {
+            "description" : "플레이한 플랫폼",
+            "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
+            "type" : "string"
+          },
+          "rating" : {
+            "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
+            "maximum" : 20,
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "koShortReview" : {
+            "description" : "플레이 후 한줄평(한국어)",
+            "type" : "string"
+          },
+          "enShortReview" : {
+            "description" : "플레이 후 한줄평(영어)",
+            "type" : "string"
+          },
+          "jaShortReview" : {
+            "description" : "플레이 후 한줄평(일본어)",
+            "type" : "string"
+          },
+          "genreIds" : {
+            "description" : "게임의 장르ID 목록",
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "enTitle", "imageKey", "jaTitle", "koTitle" ]
+      },
+      "uploadArtworkImage_201_response" : {
+        "properties" : {
+          "imageKey" : {
+            "description" : "S3에 저장된 이미지의 키 값",
+            "type" : "string"
+          }
+        },
+        "required" : [ "imageKey" ]
+      },
+      "getArtworks_200_response_items_inner_genres_inner_translations_inner" : {
+        "properties" : {
+          "language" : {
+            "description" : "ISO 639-1 언어 코드",
+            "enum" : [ "ko", "en", "ja" ],
+            "type" : "string"
+          },
+          "name" : {
+            "description" : "해당 언어의 장르명",
+            "type" : "string"
+          }
+        },
+        "required" : [ "language", "name" ]
       },
       "deleteGenres_404_response" : {
         "allOf" : [ {
@@ -1250,21 +1307,6 @@
           }
         },
         "required" : [ "code" ]
-      },
-      "refreshToken_200_response" : {
-        "properties" : {
-          "accessToken" : {
-            "description" : "일정 시간 유효한 JWT 액세스 토큰",
-            "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-            "type" : "string"
-          },
-          "expiresIn" : {
-            "description" : "토큰 만료까지 남은 시간(초)",
-            "example" : 900,
-            "type" : "integer"
-          }
-        },
-        "required" : [ "accessToken", "expiresIn" ]
       },
       "verify2FA_429_response" : {
         "allOf" : [ {
@@ -1313,22 +1355,6 @@
         },
         "required" : [ "manualEntryKey", "qrCodeUrl", "setupToken" ]
       },
-      "verify2FA_request" : {
-        "properties" : {
-          "code" : {
-            "description" : "TOTP 6자리 코드",
-            "example" : "123456",
-            "pattern" : "^[0-9]{6}$",
-            "type" : "string"
-          },
-          "setupToken" : {
-            "description" : "TOTP 설정 검증용 임시 토큰(첫 인증 때만)",
-            "example" : "eyJhbGciOiJIUzI1NiIs...",
-            "type" : "string"
-          }
-        },
-        "required" : [ "code" ]
-      },
       "uploadArtworkImage_request" : {
         "properties" : {
           "image" : {
@@ -1338,33 +1364,6 @@
           }
         },
         "required" : [ "image" ]
-      },
-      "setup2FA_401_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "code" : {
-              "description" : "에러 식별자",
-              "type" : "string"
-            },
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "code", "message" ]
-        }, {
-          "example" : {
-            "message" : "인증에 실패하였습니다"
-          }
-        } ]
       },
       "getGenres_200_response_metadata" : {
         "properties" : {
@@ -1386,22 +1385,6 @@
           }
         },
         "required" : [ "currentPage", "pageSize", "totalCount", "totalPages" ]
-      },
-      "getArtworks_200_response_items_inner_allOf_genres_inner" : {
-        "properties" : {
-          "id" : {
-            "description" : "장르 식별자",
-            "type" : "string"
-          },
-          "translations" : {
-            "description" : "지원하는 모든 언어의 번역 정보",
-            "items" : {
-              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_allOf_genres_inner_translations_inner"
-            },
-            "type" : "array"
-          }
-        },
-        "required" : [ "id", "translations" ]
       },
       "createGenre_409_response" : {
         "allOf" : [ {
