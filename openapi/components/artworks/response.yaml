@@ -1,63 +1,71 @@
-# 아트워크 리스폰스용 스키마
+# 작품의 번역 정보
+ArtworkTranslation:
+  type: object
+  required:
+    - language
+    - title
+  properties:
+    language:
+      type: string
+      description: ISO 639-1 언어 코드
+      enum: [ko, en, ja]
+    title:
+      type: string
+      description: 해당 언어의 작품명
+    shortReview:
+      type: string
+      description: 해당 언어의 간단한 리뷰
+
+# 작품 정보 (모든 번역 포함)
 Artwork:
-  allOf:
-    - $ref: "./base.yaml#/ArtworkBase"
-    - type: object
-      properties:
-        id:
-          type: string
-          description: 작품 식별자
-        imageUrl:
-          type: string
-          format: uri
-          description: |
-            팬아트 작품 이미지 URL
-            권한에 따라 다른 형태의 URL이 제공됨
-            - 일반 사용자: 1시간 유효한 서명된 URL
-            - 작품 등록자: 직접 접근 가능한 URL
-        genres:
-          type: array
-          items:
-            $ref: "../genres/response.yaml#/Genre"
-        isDraft:
-          type: boolean
-          description: 작품의 임시저장 상태 여부
-      required:
-        - id
-        - title
-        - imageUrl
-        - createdAt
-        - genres
-        - playedOn
-        - rating
-        - shortReview
-        - isDraft
-  example:
-    id: "<nanoid format>"
-    title: "젤다의 전설: 야생의 숨결"
-    imageUrl: "https://example.com/images/botw.jpg"
-    createdAt: "2023-05-20T14:45:00Z"
-    genreIds:
-      [
-        {
-          id: "<nanoid format>",
-          translation: { ko: "액션", en: "Action", ja: "アクション" },
-        },
-        {
-          id: "<nanoid format>",
-          translation:
-            { ko: "어드벤처", en: "Adventure", ja: "アドベンチャー" },
-        },
-        {
-          id: "<nanoid format>",
-          translation:
-            { ko: "오픈 월드", en: "Open World", ja: "オープンワールド" },
-        },
-      ]
-    playedOn: "Switch"
-    rating: 20
-    shortReview: "광활한 세계와 자유도가 인상적인 걸작"
-    isDraft: false
+  type: object
+  required:
+    - id
+    - imageUrl
+    - createdAt
+    - playedOn
+    - rating
+    - isDraft
+    - translations
+    - genres
+  properties:
+    id:
+      type: string
+      description: 장르 식별자
+    imageUrl:
+      type: string
+      format: uri
+      description: |
+        팬아트 작품 이미지 URL
+        권한에 따라 다른 형태의 URL이 제공됨
+        - 일반 사용자: 1시간 유효한 서명된 URL
+        - 작품 등록자: 직접 접근 가능한 URL
+    createdAt:
+      type: string
+      format: date-time
+      description: 팬아트 작품을 완성한 날짜
+    playedOn:
+      type: string
+      enum: [Steam, Switch, GOG, Epic Games, Android]
+      description: 플레이한 플랫폼
+    rating:
+      type: integer
+      minimum: 0
+      maximum: 20
+      description: 개인적으로 매긴 게임 평점 (0-20 정수)
+    isDraft:
+      type: boolean
+      description: 작품의 임시저장 상태 여부
+    translations:
+      type: array
+      description: 지원하는 모든 언어의 번역 정보
+      items:
+        $ref: "#/ArtworkTranslation"
+    genres:
+      type: array
+      description: 작품에 해당하는 장르 목록
+      items:
+        $ref: "../genres/response.yaml#/Genre"
 
 # 페이지네이션 리스폰스용 스키마
 ArtworkListResponse:
