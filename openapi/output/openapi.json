@@ -321,6 +321,69 @@
       }
     },
     "/artworks" : {
+      "delete" : {
+        "description" : "작품 일괄 삭제",
+        "operationId" : "deleteArtworks",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/deleteArtworks_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "모든 작품이 성공적으로 삭제됨"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청\n* 작품 ID 목록이 누락됨\n* 작품 ID 형식이 잘못됨\n"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
+                }
+              }
+            },
+            "description" : "일부 작품을 찾을 수 없음(모든 삭제 처리가 롤백됨)"
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/deleteArtworks_409_response"
+                }
+              }
+            },
+            "description" : "일부 작품이 공개되어 있음(모든 삭제 처리가 롤백됨)"
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "tags" : [ "Artworks" ]
+      },
       "get" : {
         "description" : "작품 목록 조회",
         "operationId" : "getArtworks",
@@ -559,21 +622,16 @@
       "delete" : {
         "description" : "장르 일괄 삭제",
         "operationId" : "deleteGenres",
-        "parameters" : [ {
-          "description" : "삭제할 장르 ID 목록",
-          "explode" : true,
-          "in" : "query",
-          "name" : "ids",
-          "required" : true,
-          "schema" : {
-            "items" : {
-              "type" : "string"
-            },
-            "type" : "array",
-            "uniqueItems" : true
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/deleteArtworks_request"
+              }
+            }
           },
-          "style" : "form"
-        } ],
+          "required" : true
+        },
         "responses" : {
           "204" : {
             "description" : "모든 장르가 성공적으로 삭제됨"
@@ -602,7 +660,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/deleteGenres_404_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
                 }
               }
             },
@@ -612,7 +670,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/createGenre_409_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_409_response"
                 }
               }
             },
@@ -737,7 +795,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/createGenre_409_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_409_response"
                 }
               }
             },
@@ -865,7 +923,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/deleteGenres_404_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
                 }
               }
             },
@@ -875,7 +933,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/createGenre_409_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_409_response"
                 }
               }
             },
@@ -1129,6 +1187,46 @@
           }
         } ]
       },
+      "deleteArtworks_409_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "code", "message" ]
+        }, {
+          "example" : {
+            "message" : "로직 상 실행에 있어 모순이 발생했습니다"
+          }
+        } ]
+      },
+      "deleteArtworks_request" : {
+        "properties" : {
+          "ids" : {
+            "items" : {
+              "type" : "string"
+            },
+            "minItems" : 1,
+            "type" : "array",
+            "uniqueItems" : true
+          }
+        },
+        "required" : [ "ids" ]
+      },
       "getArtworks_200_response_items_inner_translations_inner" : {
         "properties" : {
           "language" : {
@@ -1146,6 +1244,33 @@
           }
         },
         "required" : [ "language", "title" ]
+      },
+      "deleteArtworks_404_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "code", "message" ]
+        }, {
+          "example" : {
+            "message" : "요청한 자원을 찾을 수 없습니다"
+          }
+        } ]
       },
       "createGenre_request" : {
         "properties" : {
@@ -1270,33 +1395,6 @@
         },
         "required" : [ "language", "name" ]
       },
-      "deleteGenres_404_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "code" : {
-              "description" : "에러 식별자",
-              "type" : "string"
-            },
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "code", "message" ]
-        }, {
-          "example" : {
-            "message" : "요청한 자원을 찾을 수 없습니다"
-          }
-        } ]
-      },
       "verifyBackupCode_request" : {
         "properties" : {
           "code" : {
@@ -1385,33 +1483,6 @@
           }
         },
         "required" : [ "currentPage", "pageSize", "totalCount", "totalPages" ]
-      },
-      "createGenre_409_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "code" : {
-              "description" : "에러 식별자",
-              "type" : "string"
-            },
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "code", "message" ]
-        }, {
-          "example" : {
-            "message" : "로직 상 실행에 있어 모순이 발생했습니다"
-          }
-        } ]
       },
       "setup2FA_400_response" : {
         "allOf" : [ {
