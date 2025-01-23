@@ -91,16 +91,21 @@ delete:
     - bearerAuth: []
   tags:
     - Genres
-  parameters:
-    - name: ids
-      in: query
-      description: 삭제할 장르 ID 목록
-      required: true
-      schema:
-        type: array
-        uniqueItems: true
-        items:
-          type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ids
+          properties:
+            ids:
+              type: array
+              items:
+                type: string
+              minItems: 1
+              uniqueItems: true
   responses:
     "204":
       description: 모든 장르가 성공적으로 삭제됨
