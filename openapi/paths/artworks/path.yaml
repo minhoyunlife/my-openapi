@@ -137,7 +137,6 @@ delete:
               items:
                 type: string
               minItems: 1
-              uniqueItems: true
   responses:
     "204":
       description: 모든 작품이 성공적으로 삭제됨
