@@ -1,3 +1,15 @@
+# 207
+MultiStatusError:
+  allOf:
+    - $ref: "./base.yaml#/ErrorBase"
+    - example:
+        message: 일부 작품의 상태 변경에 실패했습니다
+        errors:
+          artwork-1:
+            - "ARTWORK_SHORT_REVIEWS_REQUIRED"
+          artwork-3:
+            - "ARTWORK_IMAGE_REQUIRED"
+
 # 400
 BadRequestError:
   allOf:

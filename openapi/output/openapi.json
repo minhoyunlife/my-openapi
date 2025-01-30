@@ -358,16 +358,6 @@
             },
             "description" : "인증 실패"
           },
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
-                }
-              }
-            },
-            "description" : "일부 작품을 찾을 수 없음(모든 삭제 처리가 롤백됨)"
-          },
           "409" : {
             "content" : {
               "application/json" : {
@@ -503,6 +493,59 @@
         "security" : [ {
           "bearerAuth" : [ ]
         }, { } ],
+        "tags" : [ "Artworks" ]
+      },
+      "patch" : {
+        "description" : "작품 일괄 상태 변경",
+        "operationId" : "updateArtworksStatus",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/updateArtworksStatus_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "모든 작품이 성공적으로 상태 변경됨"
+          },
+          "207" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/updateArtworksStatus_207_response"
+                }
+              }
+            },
+            "description" : "일부 작품의 상태 변경 실패"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청\n* 작품 ID 목록이 누락됨\n* 작품 ID 형식이 잘못됨\n* 상태 변경 값이 누락됨\n"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
         "tags" : [ "Artworks" ]
       },
       "post" : {
@@ -660,7 +703,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
+                  "$ref" : "#/components/schemas/deleteGenres_404_response"
                 }
               }
             },
@@ -923,7 +966,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
+                  "$ref" : "#/components/schemas/deleteGenres_404_response"
                 }
               }
             },
@@ -1244,7 +1287,7 @@
         },
         "required" : [ "language", "title" ]
       },
-      "deleteArtworks_404_response" : {
+      "updateArtworksStatus_207_response" : {
         "allOf" : [ {
           "properties" : {
             "code" : {
@@ -1267,7 +1310,11 @@
           "required" : [ "code", "message" ]
         }, {
           "example" : {
-            "message" : "요청한 자원을 찾을 수 없습니다"
+            "message" : "일부 작품의 상태 변경에 실패했습니다",
+            "errors" : {
+              "artwork-1" : [ "ARTWORK_SHORT_REVIEWS_REQUIRED" ],
+              "artwork-3" : [ "ARTWORK_IMAGE_REQUIRED" ]
+            }
           }
         } ]
       },
@@ -1394,6 +1441,33 @@
         },
         "required" : [ "language", "name" ]
       },
+      "deleteGenres_404_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "code", "message" ]
+        }, {
+          "example" : {
+            "message" : "요청한 자원을 찾을 수 없습니다"
+          }
+        } ]
+      },
       "verifyBackupCode_request" : {
         "properties" : {
           "code" : {
@@ -1431,6 +1505,22 @@
             "message" : "너무 많은 요청이 들어왔습니다"
           }
         } ]
+      },
+      "updateArtworksStatus_request" : {
+        "properties" : {
+          "ids" : {
+            "items" : {
+              "type" : "string"
+            },
+            "minItems" : 1,
+            "type" : "array"
+          },
+          "setPublished" : {
+            "description" : "* true: 공개\n* false: 비공개\n",
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "ids", "setPublished" ]
       },
       "setup2FA_201_response" : {
         "properties" : {
