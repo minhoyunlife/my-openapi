@@ -116,59 +116,6 @@ post:
           schema:
             $ref: "../../components/errors/errors.yaml#/UnauthorizedError"
 
-patch:
-  description: 작품 일괄 상태 변경
-  operationId: updateArtworksStatus
-  security:
-    - bearerAuth: []
-  tags:
-    - Artworks
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - ids
-            - setPublished
-          properties:
-            ids:
-              type: array
-              items:
-                type: string
-              minItems: 1
-            setPublished:
-              type: boolean
-              description: |
-                * true: 공개
-                * false: 비공개
-  responses:
-    "204":
-      description: 모든 작품이 성공적으로 상태 변경됨
-    "207":
-      description: 일부 작품의 상태 변경 실패
-      content:
-        application/json:
-          schema:
-            $ref: "../../components/errors/errors.yaml#/MultiStatusError"
-    "400":
-      description: |
-        잘못된 요청
-        * 작품 ID 목록이 누락됨
-        * 작품 ID 형식이 잘못됨
-        * 상태 변경 값이 누락됨
-      content:
-        application/json:
-          schema:
-            $ref: "../../components/errors/errors.yaml#/BadRequestError"
-    "401":
-      description: 인증 실패
-      content:
-        application/json:
-          schema:
-            $ref: "../../components/errors/errors.yaml#/UnauthorizedError"
-
 delete:
   description: 작품 일괄 삭제
   operationId: deleteArtworks
