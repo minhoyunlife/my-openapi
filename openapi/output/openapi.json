@@ -495,59 +495,6 @@
         }, { } ],
         "tags" : [ "Artworks" ]
       },
-      "patch" : {
-        "description" : "작품 일괄 상태 변경",
-        "operationId" : "updateArtworksStatus",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/updateArtworksStatus_request"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "204" : {
-            "description" : "모든 작품이 성공적으로 상태 변경됨"
-          },
-          "207" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/updateArtworksStatus_207_response"
-                }
-              }
-            },
-            "description" : "일부 작품의 상태 변경 실패"
-          },
-          "400" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
-                }
-              }
-            },
-            "description" : "잘못된 요청\n* 작품 ID 목록이 누락됨\n* 작품 ID 형식이 잘못됨\n* 상태 변경 값이 누락됨\n"
-          },
-          "401" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_401_response"
-                }
-              }
-            },
-            "description" : "인증 실패"
-          }
-        },
-        "security" : [ {
-          "bearerAuth" : [ ]
-        } ],
-        "tags" : [ "Artworks" ]
-      },
       "post" : {
         "description" : "새로운 작품 등록",
         "operationId" : "createArtwork",
@@ -653,6 +600,61 @@
               }
             },
             "description" : "업로드 파일 용량 제한(100MB) 초과"
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "tags" : [ "Artworks" ]
+      }
+    },
+    "/artworks/statuses" : {
+      "patch" : {
+        "description" : "작품 일괄 상태 변경",
+        "operationId" : "updateArtworksStatus",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/updateArtworksStatus_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "모든 작품이 성공적으로 상태 변경됨"
+          },
+          "207" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/updateArtworksStatus_207_response"
+                }
+              }
+            },
+            "description" : "일부 작품의 상태 변경 실패"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청\n* 작품 ID 목록이 누락됨\n* 작품 ID 형식이 잘못됨\n* 상태 변경 값이 누락됨\n"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
           }
         },
         "security" : [ {
