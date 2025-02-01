@@ -358,6 +358,16 @@
             },
             "description" : "인증 실패"
           },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
+                }
+              }
+            },
+            "description" : "일부 작품을 찾을 수 없음(모든 삭제 처리가 롤백됨)"
+          },
           "409" : {
             "content" : {
               "application/json" : {
@@ -703,7 +713,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/deleteGenres_404_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
                 }
               }
             },
@@ -966,7 +976,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/deleteGenres_404_response"
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
                 }
               }
             },
@@ -1318,6 +1328,33 @@
           }
         } ]
       },
+      "deleteArtworks_404_response" : {
+        "allOf" : [ {
+          "properties" : {
+            "code" : {
+              "description" : "에러 식별자",
+              "type" : "string"
+            },
+            "message" : {
+              "description" : "에러 메시지",
+              "type" : "string"
+            },
+            "errors" : {
+              "additionalProperties" : {
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "description" : "상세 에러 정보"
+            }
+          },
+          "required" : [ "code", "message" ]
+        }, {
+          "example" : {
+            "message" : "요청한 자원을 찾을 수 없습니다"
+          }
+        } ]
+      },
       "createGenre_request" : {
         "properties" : {
           "koName" : {
@@ -1440,33 +1477,6 @@
           }
         },
         "required" : [ "language", "name" ]
-      },
-      "deleteGenres_404_response" : {
-        "allOf" : [ {
-          "properties" : {
-            "code" : {
-              "description" : "에러 식별자",
-              "type" : "string"
-            },
-            "message" : {
-              "description" : "에러 메시지",
-              "type" : "string"
-            },
-            "errors" : {
-              "additionalProperties" : {
-                "items" : {
-                  "type" : "string"
-                }
-              },
-              "description" : "상세 에러 정보"
-            }
-          },
-          "required" : [ "code", "message" ]
-        }, {
-          "example" : {
-            "message" : "요청한 자원을 찾을 수 없습니다"
-          }
-        } ]
       },
       "verifyBackupCode_request" : {
         "properties" : {
