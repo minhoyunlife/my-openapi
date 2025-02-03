@@ -25,6 +25,7 @@ CreateGenreRequest:
 # 수정 리퀘스트용 스키마
 UpdateGenreRequest:
   type: object
+  minProperties: 1
   properties:
     koName:
       type: string
@@ -41,10 +42,3 @@ UpdateGenreRequest:
       description: 장르의 일본어명
       minLength: 1
       maxLength: 30
-  anyOf:
-    - type: object
-      required: [koName]
-    - type: object
-      required: [enName]
-    - type: object
-      required: [jaName]

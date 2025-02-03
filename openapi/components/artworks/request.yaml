@@ -60,6 +60,7 @@ UploadArtworkImageRequest:
 # 수정 리퀘스트용 스키마
 UpdateArtworkRequest:
   type: object
+  minProperties: 1
   properties:
     koTitle:
       type: string
@@ -76,8 +77,8 @@ UpdateArtworkRequest:
       description: 팬아트 작품을 완성한 날짜
     playedOn:
       type: string
-      enum: [Steam, Switch, GOG, Epic Games, Android]
       description: 플레이한 플랫폼
+      enum: [Steam, Switch, GOG, Epic Games, Android]
     rating:
       type: integer
       minimum: 0
@@ -97,24 +98,3 @@ UpdateArtworkRequest:
       items:
         type: string
       description: 게임의 장르ID 목록
-  anyOf:
-    - type: object
-      required: [koTitle]
-    - type: object
-      required: [enTitle]
-    - type: object
-      required: [jaTitle]
-    - type: object
-      required: [createdAt]
-    - type: object
-      required: [playedOn]
-    - type: object
-      required: [rating]
-    - type: object
-      required: [koShortReview]
-    - type: object
-      required: [enShortReview]
-    - type: object
-      required: [jaShortReview]
-    - type: object
-      required: [genreIds]
