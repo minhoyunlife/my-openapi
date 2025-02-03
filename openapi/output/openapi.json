@@ -1228,16 +1228,7 @@
         } ]
       },
       "updateGenre_request" : {
-        "anyOf" : [ {
-          "required" : [ "koName" ],
-          "type" : "object"
-        }, {
-          "required" : [ "enName" ],
-          "type" : "object"
-        }, {
-          "required" : [ "jaName" ],
-          "type" : "object"
-        } ],
+        "minProperties" : 1,
         "properties" : {
           "koName" : {
             "description" : "장르의 한국어명",
@@ -1558,37 +1549,7 @@
         "required" : [ "imageKey" ]
       },
       "updateArtwork_request" : {
-        "anyOf" : [ {
-          "required" : [ "koTitle" ],
-          "type" : "object"
-        }, {
-          "required" : [ "enTitle" ],
-          "type" : "object"
-        }, {
-          "required" : [ "jaTitle" ],
-          "type" : "object"
-        }, {
-          "required" : [ "createdAt" ],
-          "type" : "object"
-        }, {
-          "required" : [ "playedOn" ],
-          "type" : "object"
-        }, {
-          "required" : [ "rating" ],
-          "type" : "object"
-        }, {
-          "required" : [ "koShortReview" ],
-          "type" : "object"
-        }, {
-          "required" : [ "enShortReview" ],
-          "type" : "object"
-        }, {
-          "required" : [ "jaShortReview" ],
-          "type" : "object"
-        }, {
-          "required" : [ "genreIds" ],
-          "type" : "object"
-        } ],
+        "minProperties" : 1,
         "properties" : {
           "koTitle" : {
             "description" : "게임 제목(한국어)",
