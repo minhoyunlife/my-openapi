@@ -56,3 +56,65 @@ UploadArtworkImageRequest:
       description: 업로드할 작품 이미지 파일의 바이너리 문자열
   required:
     - image
+
+# 수정 리퀘스트용 스키마
+UpdateArtworkRequest:
+  type: object
+  properties:
+    koTitle:
+      type: string
+      description: 게임 제목(한국어)
+    enTitle:
+      type: string
+      description: 게임 제목(영어)
+    jaTitle:
+      type: string
+      description: 게임 제목(일본어)
+    createdAt:
+      type: string
+      format: date-time
+      description: 팬아트 작품을 완성한 날짜
+    playedOn:
+      type: string
+      enum: [Steam, Switch, GOG, Epic Games, Android]
+      description: 플레이한 플랫폼
+    rating:
+      type: integer
+      minimum: 0
+      maximum: 20
+      description: 개인적으로 매긴 게임 평점 (0-20 정수)
+    koShortReview:
+      type: string
+      description: 플레이 후 한줄평(한국어)
+    enShortReview:
+      type: string
+      description: 플레이 후 한줄평(영어)
+    jaShortReview:
+      type: string
+      description: 플레이 후 한줄평(일본어)
+    genreIds:
+      type: array
+      items:
+        type: string
+      description: 게임의 장르ID 목록
+  anyOf:
+    - type: object
+      required: [koTitle]
+    - type: object
+      required: [enTitle]
+    - type: object
+      required: [jaTitle]
+    - type: object
+      required: [createdAt]
+    - type: object
+      required: [playedOn]
+    - type: object
+      required: [rating]
+    - type: object
+      required: [koShortReview]
+    - type: object
+      required: [enShortReview]
+    - type: object
+      required: [jaShortReview]
+    - type: object
+      required: [genreIds]
