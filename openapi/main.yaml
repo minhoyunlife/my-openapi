@@ -52,6 +52,8 @@ paths:
     $ref: "./paths/artworks/images/path.yaml"
   /artworks/statuses:
     $ref: "./paths/artworks/statuses/path.yaml"
+  /artworks/{id}:
+    $ref: "./paths/artworks/id/path.yaml"
 
   # 장르
   /genres:
