@@ -673,6 +673,89 @@
         "tags" : [ "Artworks" ]
       }
     },
+    "/artworks/{id}" : {
+      "patch" : {
+        "description" : "작품 수정",
+        "operationId" : "updateArtwork",
+        "parameters" : [ {
+          "description" : "수정할 작품의 ID",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/updateArtwork_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/getArtworks_200_response_items_inner"
+                }
+              }
+            },
+            "description" : "작품이 성공적으로 수정됨"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_400_response"
+                }
+              }
+            },
+            "description" : "잘못된 요청"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/setup2FA_401_response"
+                }
+              }
+            },
+            "description" : "인증 실패"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
+                }
+              }
+            },
+            "description" : "작품을 찾을 수 없음"
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/deleteArtworks_409_response"
+                }
+              }
+            },
+            "description" : "공개된 작품은 수정할 수 없음 (먼저 초안 상태로 변경 필요)"
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "tags" : [ "Artworks" ]
+      }
+    },
     "/genres" : {
       "delete" : {
         "description" : "장르 일괄 삭제",
@@ -1145,8 +1228,16 @@
         } ]
       },
       "updateGenre_request" : {
-        "anyOf" : [ ],
-        "nullable" : true,
+        "anyOf" : [ {
+          "required" : [ "koName" ],
+          "type" : "object"
+        }, {
+          "required" : [ "enName" ],
+          "type" : "object"
+        }, {
+          "required" : [ "jaName" ],
+          "type" : "object"
+        } ],
         "properties" : {
           "koName" : {
             "description" : "장르의 한국어명",
@@ -1465,6 +1556,88 @@
           }
         },
         "required" : [ "imageKey" ]
+      },
+      "updateArtwork_request" : {
+        "anyOf" : [ {
+          "required" : [ "koTitle" ],
+          "type" : "object"
+        }, {
+          "required" : [ "enTitle" ],
+          "type" : "object"
+        }, {
+          "required" : [ "jaTitle" ],
+          "type" : "object"
+        }, {
+          "required" : [ "createdAt" ],
+          "type" : "object"
+        }, {
+          "required" : [ "playedOn" ],
+          "type" : "object"
+        }, {
+          "required" : [ "rating" ],
+          "type" : "object"
+        }, {
+          "required" : [ "koShortReview" ],
+          "type" : "object"
+        }, {
+          "required" : [ "enShortReview" ],
+          "type" : "object"
+        }, {
+          "required" : [ "jaShortReview" ],
+          "type" : "object"
+        }, {
+          "required" : [ "genreIds" ],
+          "type" : "object"
+        } ],
+        "properties" : {
+          "koTitle" : {
+            "description" : "게임 제목(한국어)",
+            "type" : "string"
+          },
+          "enTitle" : {
+            "description" : "게임 제목(영어)",
+            "type" : "string"
+          },
+          "jaTitle" : {
+            "description" : "게임 제목(일본어)",
+            "type" : "string"
+          },
+          "createdAt" : {
+            "description" : "팬아트 작품을 완성한 날짜",
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "playedOn" : {
+            "description" : "플레이한 플랫폼",
+            "enum" : [ "Steam", "Switch", "GOG", "Epic Games", "Android" ],
+            "type" : "string"
+          },
+          "rating" : {
+            "description" : "개인적으로 매긴 게임 평점 (0-20 정수)",
+            "maximum" : 20,
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "koShortReview" : {
+            "description" : "플레이 후 한줄평(한국어)",
+            "type" : "string"
+          },
+          "enShortReview" : {
+            "description" : "플레이 후 한줄평(영어)",
+            "type" : "string"
+          },
+          "jaShortReview" : {
+            "description" : "플레이 후 한줄평(일본어)",
+            "type" : "string"
+          },
+          "genreIds" : {
+            "description" : "게임의 장르ID 목록",
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }
       },
       "getArtworks_200_response_items_inner_genres_inner_translations_inner" : {
         "properties" : {
