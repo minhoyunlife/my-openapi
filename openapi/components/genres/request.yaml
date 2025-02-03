@@ -42,6 +42,9 @@ UpdateGenreRequest:
       minLength: 1
       maxLength: 30
   anyOf:
-    - required: [koName]
-    - required: [enName]
-    - required: [jaName]
+    - type: object
+      required: [koName]
+    - type: object
+      required: [enName]
+    - type: object
+      required: [jaName]
