@@ -1166,6 +1166,10 @@
             "description" : "작품의 임시저장 상태 여부",
             "type" : "boolean"
           },
+          "isVertical" : {
+            "description" : "작품의 이미지가 세로인지의 여부",
+            "type" : "boolean"
+          },
           "translations" : {
             "description" : "지원하는 모든 언어의 번역 정보",
             "items" : {
@@ -1181,7 +1185,7 @@
             "type" : "array"
           }
         },
-        "required" : [ "createdAt", "genres", "id", "imageUrl", "isDraft", "playedOn", "rating", "translations" ]
+        "required" : [ "createdAt", "genres", "id", "imageUrl", "isDraft", "isVertical", "playedOn", "rating", "translations" ]
       },
       "getArtworks_200_response" : {
         "properties" : {
@@ -1489,6 +1493,10 @@
             "description" : "S3에 저장된 이미지의 키 값",
             "type" : "string"
           },
+          "isVertical" : {
+            "description" : "이미지의 세로 여부",
+            "type" : "boolean"
+          },
           "koTitle" : {
             "description" : "게임 제목(한국어)",
             "type" : "string"
@@ -1537,16 +1545,20 @@
             "type" : "array"
           }
         },
-        "required" : [ "enTitle", "imageKey", "jaTitle", "koTitle" ]
+        "required" : [ "enTitle", "imageKey", "isVertical", "jaTitle", "koTitle" ]
       },
       "uploadArtworkImage_201_response" : {
         "properties" : {
           "imageKey" : {
             "description" : "S3에 저장된 이미지의 키 값",
             "type" : "string"
+          },
+          "isVertical" : {
+            "description" : "이미지의 세로 여부",
+            "type" : "string"
           }
         },
-        "required" : [ "imageKey" ]
+        "required" : [ "imageKey", "isVertical" ]
       },
       "updateArtwork_request" : {
         "minProperties" : 1,
