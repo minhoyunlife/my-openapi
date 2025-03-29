@@ -1361,72 +1361,8 @@
       }
     },
     "/series/{id}/artworks" : {
-      "delete" : {
-        "description" : "시리즈에서 작품 제거",
-        "operationId" : "removeArtworksFromSeries",
-        "parameters" : [ {
-          "description" : "시리즈 ID",
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/removeArtworksFromSeries_request"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "204" : {
-            "description" : "시리즈에서 작품 제거 성공"
-          },
-          "400" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
-                }
-              }
-            },
-            "description" : "잘못된 요청"
-          },
-          "401" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_401_response"
-                }
-              }
-            },
-            "description" : "인증 실패"
-          },
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
-                }
-              }
-            },
-            "description" : "시리즈를 찾을 수 없음"
-          }
-        },
-        "security" : [ {
-          "bearerAuth" : [ ]
-        } ],
-        "tags" : [ "Series" ]
-      },
       "put" : {
-        "description" : "시리즈에 작품 추가/업데이트",
+        "description" : "시리즈와 작품 간의 관계 전체 관리 (추가/삭제/순서 변경)\n요청에 포함된 작품 목록이 시리즈의 작품 구성을 완전히 대체.\n요청에 포함되지 않은 기존 작품은 시리즈에서 제거됨.\n- 작품 추가의 경우: 기존 작품 + 새 작품을 모두 포함해 전송\n- 작품 제거의 경우: 남길 작품만 포함해 전송\n- 순서 변경의 경우: 전체 작품 목록과 변경된 순서 값을 전송\n",
         "operationId" : "updateSeriesArtworks",
         "parameters" : [ {
           "description" : "시리즈 ID",
@@ -1458,7 +1394,7 @@
                 }
               }
             },
-            "description" : "시리즈에 작품 추가/업데이트 성공"
+            "description" : "시리즈의 작품 구성 업데이트 성공"
           },
           "400" : {
             "content" : {
@@ -1489,89 +1425,6 @@
               }
             },
             "description" : "시리즈 또는 일부 작품을 찾을 수 없음"
-          }
-        },
-        "security" : [ {
-          "bearerAuth" : [ ]
-        } ],
-        "tags" : [ "Series" ]
-      }
-    },
-    "/series/{id}/artworks/order" : {
-      "patch" : {
-        "description" : "시리즈 내 작품 순서만 업데이트",
-        "operationId" : "updateSeriesArtworksOrder",
-        "parameters" : [ {
-          "description" : "시리즈 ID",
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/updateSeriesArtworksOrder_request"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/getSeries_200_response_items_inner"
-                }
-              }
-            },
-            "description" : "시리즈 내 작품 순서 업데이트 성공"
-          },
-          "400" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_400_response"
-                }
-              }
-            },
-            "description" : "잘못된 요청"
-          },
-          "401" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/setup2FA_401_response"
-                }
-              }
-            },
-            "description" : "인증 실패"
-          },
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/deleteArtworks_404_response"
-                }
-              }
-            },
-            "description" : "시리즈 또는 일부 작품을 찾을 수 없음"
-          },
-          "409" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/deleteArtworks_409_response"
-                }
-              }
-            },
-            "description" : "시리즈에 속하지 않은 작품이 포함됨"
           }
         },
         "security" : [ {
@@ -1603,7 +1456,7 @@
       "updateSeriesArtworks_request" : {
         "properties" : {
           "artworks" : {
-            "description" : "시리즈에 추가/업데이트할 작품 목록",
+            "description" : "시리즈에 포함할 작품 목록 (이 목록이 기존 작품 구성을 완전히 대체함)\n- 빈 배열을 전송하면 시리즈의 모든 작품이 제거됨\n- 요청에 포함되지 않은 기존 작품은 시리즈에서 제거됨\n",
             "items" : {
               "$ref" : "#/components/schemas/updateSeriesArtworks_request_artworks_inner"
             },
@@ -1645,18 +1498,6 @@
           }
         },
         "required" : [ "accessToken" ]
-      },
-      "updateSeriesArtworksOrder_request" : {
-        "properties" : {
-          "artworks" : {
-            "description" : "순서를 업데이트할 작품 목록",
-            "items" : {
-              "$ref" : "#/components/schemas/updateSeriesArtworksOrder_request_artworks_inner"
-            },
-            "type" : "array"
-          }
-        },
-        "required" : [ "artworks" ]
       },
       "getArtworks_200_response_items_inner_series_translations_inner" : {
         "properties" : {
@@ -1853,19 +1694,6 @@
         },
         "required" : [ "accessToken", "expiresIn" ]
       },
-      "removeArtworksFromSeries_request" : {
-        "properties" : {
-          "artworkIds" : {
-            "description" : "시리즈에서 제거할 작품 ID 목록",
-            "items" : {
-              "type" : "string"
-            },
-            "minItems" : 1,
-            "type" : "array"
-          }
-        },
-        "required" : [ "artworkIds" ]
-      },
       "getSeries_200_response_items_inner_seriesArtworks_inner" : {
         "properties" : {
           "id" : {
@@ -2060,20 +1888,6 @@
           }
         },
         "required" : [ "id", "seriesArtworks", "translations" ]
-      },
-      "updateSeriesArtworksOrder_request_artworks_inner" : {
-        "properties" : {
-          "id" : {
-            "description" : "작품 ID",
-            "type" : "string"
-          },
-          "order" : {
-            "description" : "새로운 순서 (0부터 시작)",
-            "minimum" : 0,
-            "type" : "integer"
-          }
-        },
-        "required" : [ "id", "order" ]
       },
       "getArtworks_200_response_items_inner_series" : {
         "nullable" : true,
