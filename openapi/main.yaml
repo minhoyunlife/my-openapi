@@ -28,6 +28,8 @@ tags:
     description: 팬아트 작품 관리와 관련된 오퍼레이션
   - name: Genres
     description: 장르 관리와 관련된 오퍼레이션
+  - name: Series
+    description: 게임 시리즈 관리와 관련된 오퍼레이션
 paths:
   # 인증
   /auth/github:
@@ -62,3 +64,11 @@ paths:
     $ref: "./paths/genres/names/path.yaml"
   /genres/{id}:
     $ref: "./paths/genres/id/path.yaml"
+
+  # 시리즈
+  /series:
+    $ref: "./paths/series/path.yaml"
+  /series/{id}:
+    $ref: "./paths/series/id/path.yaml"
+  /series/{id}/artworks:
+    $ref: "./paths/series/id/artworks/path.yaml"

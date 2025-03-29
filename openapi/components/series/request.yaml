@@ -1,0 +1,57 @@
+# 생성 리퀘스트용 스키마
+CreateSeriesRequest:
+  required:
+    - koTitle
+    - enTitle
+    - jaTitle
+  properties:
+    koTitle:
+      type: string
+      description: 시리즈 제목(한국어)
+    enTitle:
+      type: string
+      description: 시리즈 제목(영어)
+    jaTitle:
+      type: string
+      description: 시리즈 제목(일본어)
+
+# 수정 리퀘스트용 스키마
+UpdateSeriesRequest:
+  type: object
+  minProperties: 1
+  properties:
+    koTitle:
+      type: string
+      description: 시리즈 제목(한국어)
+    enTitle:
+      type: string
+      description: 시리즈 제목(영어)
+    jaTitle:
+      type: string
+      description: 시리즈 제목(일본어)
+
+# 시리즈에 작품 구성 리퀘스트용 스키마
+SeriesArtworksRequest:
+  type: object
+  required:
+    - artworks
+  properties:
+    artworks:
+      type: array
+      description: |
+        시리즈에 포함할 작품 목록 (이 목록이 기존 작품 구성을 완전히 대체함)
+        - 빈 배열을 전송하면 시리즈의 모든 작품이 제거됨
+        - 요청에 포함되지 않은 기존 작품은 시리즈에서 제거됨
+      items:
+        type: object
+        required:
+          - id
+          - order
+        properties:
+          id:
+            type: string
+            description: 작품 ID
+          order:
+            type: integer
+            minimum: 0
+            description: 시리즈 내 순서 (0부터 시작)
