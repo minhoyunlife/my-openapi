@@ -64,7 +64,7 @@ paths:
     $ref: "./paths/genres/names/path.yaml"
   /genres/{id}:
     $ref: "./paths/genres/id/path.yaml"
-    
+
   # 시리즈
   /series:
     $ref: "./paths/series/path.yaml"
@@ -72,5 +72,3 @@ paths:
     $ref: "./paths/series/id/path.yaml"
   /series/{id}/artworks:
     $ref: "./paths/series/id/artworks/path.yaml"
-  /series/{id}/artworks/order:
-    $ref: "./paths/series/id/artworks/order/path.yaml"
