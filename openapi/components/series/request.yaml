@@ -1,0 +1,90 @@
+# 생성 리퀘스트용 스키마
+CreateSeriesRequest:
+  required:
+    - koTitle
+    - enTitle
+    - jaTitle
+  properties:
+    koTitle:
+      type: string
+      description: 시리즈 제목(한국어)
+    enTitle:
+      type: string
+      description: 시리즈 제목(영어)
+    jaTitle:
+      type: string
+      description: 시리즈 제목(일본어)
+
+# 수정 리퀘스트용 스키마
+UpdateSeriesRequest:
+  type: object
+  minProperties: 1
+  properties:
+    koTitle:
+      type: string
+      description: 시리즈 제목(한국어)
+    enTitle:
+      type: string
+      description: 시리즈 제목(영어)
+    jaTitle:
+      type: string
+      description: 시리즈 제목(일본어)
+
+# 시리즈에 작품 추가/업데이트 리퀘스트용 스키마
+SeriesArtworksRequest:
+  type: object
+  required:
+    - artworks
+  properties:
+    artworks:
+      type: array
+      description: 시리즈에 추가/업데이트할 작품 목록
+      items:
+        type: object
+        required:
+          - id
+          - order
+        properties:
+          id:
+            type: string
+            description: 작품 ID
+          order:
+            type: integer
+            minimum: 0
+            description: 시리즈 내 순서 (0부터 시작)
+
+# 시리즈에서 작품 제거 리퀘스트용 스키마
+SeriesArtworksRemoveRequest:
+  type: object
+  required:
+    - artworkIds
+  properties:
+    artworkIds:
+      type: array
+      description: 시리즈에서 제거할 작품 ID 목록
+      items:
+        type: string
+      minItems: 1
+
+# 시리즈 내 작품 순서만 업데이트하는 리퀘스트용 스키마
+SeriesArtworksOrderRequest:
+  type: object
+  required:
+    - artworks
+  properties:
+    artworks:
+      type: array
+      description: 순서를 업데이트할 작품 목록
+      items:
+        type: object
+        required:
+          - id
+          - order
+        properties:
+          id:
+            type: string
+            description: 작품 ID
+          order:
+            type: integer
+            minimum: 0
+            description: 새로운 순서 (0부터 시작)

@@ -16,6 +16,26 @@ ArtworkTranslation:
       type: string
       description: 해당 언어의 간단한 리뷰
 
+# 작품 정보에 포함되는 시리즈 참조 정보
+ArtworkSeries:
+  type: object
+  required:
+    - id
+    - order
+    - translations
+  properties:
+    id:
+      type: string
+      description: 시리즈 식별자
+    order:
+      type: integer
+      description: 시리즈 내 순서 (0부터 시작)
+    translations:
+      type: array
+      description: 시리즈 번역 정보
+      items:
+        $ref: "../series/response.yaml#/SeriesTranslation"
+
 # 작품 정보 (모든 번역 포함)
 Artwork:
   type: object
@@ -70,6 +90,11 @@ Artwork:
       description: 작품에 해당하는 장르 목록
       items:
         $ref: "../genres/response.yaml#/Genre"
+    series:
+      description: 작품이 속한 시리즈 정보 (없으면 null)
+      oneOf:
+        - $ref: "#/ArtworkSeries"
+        - type: "null"
 
 # 페이지네이션 리스폰스용 스키마
 ArtworkListResponse:

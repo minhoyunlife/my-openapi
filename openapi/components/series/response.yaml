@@ -1,0 +1,88 @@
+# 시리즈의 번역 정보
+SeriesTranslation:
+  type: object
+  required:
+    - language
+    - title
+  properties:
+    language:
+      type: string
+      description: ISO 639-1 언어 코드
+      enum: [ko, en, ja]
+    title:
+      type: string
+      description: 해당 언어의 시리즈명
+
+# 시리즈 내 작품 정보
+SeriesArtwork:
+  type: object
+  required:
+    - id
+    - order
+    - translations
+  properties:
+    id:
+      type: string
+      description: 작품 식별자
+    order:
+      type: integer
+      description: 시리즈 내 순서 (0부터 시작)
+    translations:
+      type: array
+      description: 작품의 번역 정보
+      items:
+        $ref: "../artworks/response.yaml#/ArtworkTranslation"
+
+# 시리즈 정보 (모든 번역 포함)
+Series:
+  type: object
+  required:
+    - id
+    - translations
+    - seriesArtworks
+  properties:
+    id:
+      type: string
+      description: 시리즈 식별자
+    translations:
+      type: array
+      description: 지원하는 모든 언어의 번역 정보
+      items:
+        $ref: "#/SeriesTranslation"
+    seriesArtworks:
+      type: array
+      description: 시리즈에 속한 작품 목록
+      items:
+        $ref: "#/SeriesArtwork"
+
+# 페이지네이션 리스폰스용 스키마
+SeriesListResponse:
+  type: object
+  required:
+    - items
+    - metadata
+  properties:
+    items:
+      type: array
+      items:
+        $ref: "#/Series"
+    metadata:
+      type: object
+      required:
+        - totalCount
+        - totalPages
+        - currentPage
+        - pageSize
+      properties:
+        totalCount:
+          type: integer
+          description: 검색 조건에 해당하는 전체 시리즈 수
+        totalPages:
+          type: integer
+          description: 전체 페이지 수 (totalCount와 pageSize 기반으로 계산)
+        currentPage:
+          type: integer
+          description: 현재 조회 중인 페이지 번호
+        pageSize:
+          type: integer
+          description: 페이지당 항목 수 (고정값)
