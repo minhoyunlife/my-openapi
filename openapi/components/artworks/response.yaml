@@ -91,10 +91,10 @@ Artwork:
       items:
         $ref: "../genres/response.yaml#/Genre"
     series:
-      description: 작품이 속한 시리즈 정보 (없으면 null)
-      oneOf:
-        - $ref: "#/ArtworkSeries"
-        - type: "null"
+      type: object
+      description: 작품이 속한 시리즈 정보
+      nullable: true
+      $ref: "#/ArtworkSeries"
 
 # 페이지네이션 리스폰스용 스키마
 ArtworkListResponse:
