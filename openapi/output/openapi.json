@@ -1499,20 +1499,6 @@
         },
         "required" : [ "accessToken" ]
       },
-      "getArtworks_200_response_items_inner_series_translations_inner" : {
-        "properties" : {
-          "language" : {
-            "description" : "ISO 639-1 언어 코드",
-            "enum" : [ "ko", "en", "ja" ],
-            "type" : "string"
-          },
-          "title" : {
-            "description" : "해당 언어의 시리즈명",
-            "type" : "string"
-          }
-        },
-        "required" : [ "language", "title" ]
-      },
       "getGenres_200_response" : {
         "properties" : {
           "items" : {
@@ -1678,6 +1664,26 @@
           }
         },
         "required" : [ "id", "translations" ]
+      },
+      "getArtworks_200_response_items_inner_series_anyOf" : {
+        "properties" : {
+          "id" : {
+            "description" : "시리즈 식별자",
+            "type" : "string"
+          },
+          "order" : {
+            "description" : "시리즈 내 순서 (0부터 시작)",
+            "type" : "integer"
+          },
+          "translations" : {
+            "description" : "시리즈 번역 정보",
+            "items" : {
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_series_anyOf_translations_inner"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "id", "order", "translations" ]
       },
       "refreshToken_200_response" : {
         "properties" : {
@@ -1875,7 +1881,7 @@
           "translations" : {
             "description" : "지원하는 모든 언어의 번역 정보",
             "items" : {
-              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_series_translations_inner"
+              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_series_anyOf_translations_inner"
             },
             "type" : "array"
           },
@@ -1890,25 +1896,13 @@
         "required" : [ "id", "seriesArtworks", "translations" ]
       },
       "getArtworks_200_response_items_inner_series" : {
-        "nullable" : true,
-        "properties" : {
-          "id" : {
-            "description" : "시리즈 식별자",
-            "type" : "string"
-          },
-          "order" : {
-            "description" : "시리즈 내 순서 (0부터 시작)",
-            "type" : "integer"
-          },
-          "translations" : {
-            "description" : "시리즈 번역 정보",
-            "items" : {
-              "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_series_translations_inner"
-            },
-            "type" : "array"
-          }
-        },
-        "required" : [ "id", "order", "translations" ]
+        "anyOf" : [ {
+          "$ref" : "#/components/schemas/getArtworks_200_response_items_inner_series_anyOf"
+        }, {
+          "type" : "object",
+          "nullable" : true
+        } ],
+        "description" : "작품이 속한 시리즈 정보 (없으면 null)"
       },
       "deleteArtworks_404_response" : {
         "allOf" : [ {
@@ -2286,6 +2280,20 @@
             }
           }
         } ]
+      },
+      "getArtworks_200_response_items_inner_series_anyOf_translations_inner" : {
+        "properties" : {
+          "language" : {
+            "description" : "ISO 639-1 언어 코드",
+            "enum" : [ "ko", "en", "ja" ],
+            "type" : "string"
+          },
+          "title" : {
+            "description" : "해당 언어의 시리즈명",
+            "type" : "string"
+          }
+        },
+        "required" : [ "language", "title" ]
       }
     },
     "securitySchemes" : {

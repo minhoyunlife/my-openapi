@@ -94,7 +94,8 @@ Artwork:
       description: 작품이 속한 시리즈 정보 (없으면 null)
       anyOf:
         - $ref: "#/ArtworkSeries"
-        - type: "null"
+        - type: object
+          nullable: true
 
 # 페이지네이션 리스폰스용 스키마
 ArtworkListResponse:
