@@ -1890,7 +1890,7 @@
         "required" : [ "id", "seriesArtworks", "translations" ]
       },
       "getArtworks_200_response_items_inner_series" : {
-        "description" : "작품이 속한 시리즈 정보",
+        "nullable" : true,
         "properties" : {
           "id" : {
             "description" : "시리즈 식별자",
@@ -1908,8 +1908,7 @@
             "type" : "array"
           }
         },
-        "required" : [ "id", "order", "translations" ],
-        "nullable" : true
+        "required" : [ "id", "order", "translations" ]
       },
       "deleteArtworks_404_response" : {
         "allOf" : [ {
